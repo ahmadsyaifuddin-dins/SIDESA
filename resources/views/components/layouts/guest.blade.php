@@ -6,13 +6,13 @@
     <title>{{ $title ?? 'SIDESA' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-[var(--color-background)] text-[var(--color-text-main)] antialiased">
+<body class="bg-background text-main antialiased">
     
     {{-- Container utama yang menengahkan card login --}}
     <div class="min-h-screen flex items-center justify-center px-4">
         
         {{-- Card utama yang akan berisi 2 kolom --}}
-        <div class="w-full max-w-4xl bg-[var(--color-surface)] rounded-lg shadow-lg flex">
+        <div class="w-full max-w-4xl bg-surface rounded-lg shadow-lg flex">
             
             <div class="hidden md:block md:w-1/2">
                 {{-- Helper 'asset()' akan otomatis mengarah ke folder 'public' --}}
@@ -22,10 +22,10 @@
             <div class="w-full md:w-1/2 p-8">
                 {{-- Logo --}}
                 <div>
-                    <a href="/" class="text-3xl font-bold text-[var(--color-primary)]">
+                    <a href="/" class="text-3xl font-bold text-primary">
                         SIDESA
                     </a>
-                    <p class="text-sm text-[var(--color-text-light)] mt-2">
+                    <p class="text-sm text-light mt-2">
                         Desa Anjir Muara Kota Tengah
                     </p>
                 </div>

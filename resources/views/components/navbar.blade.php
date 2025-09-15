@@ -1,5 +1,5 @@
 <header
-    class="h-16 bg-[var(--color-surface)] border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
+    class="h-16 bg-surface border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
 
     {{-- Sisi Kiri Navbar --}}
     <div class="flex items-center gap-4">
@@ -21,25 +21,25 @@
             {{-- 2. Tambahkan @click untuk mengubah state 'open' --}}
             <button @click="open = !open" class="flex items-center gap-3">
                 <div class="text-right">
-                    <div class="font-semibold text-sm text-[var(--color-text-main)]">{{ auth()->user()->name }}</div>
-                    <div class="text-xs text-[var(--color-text-light)]">{{ auth()->user()->role }}</div>
+                    <div class="font-semibold text-sm text-main">{{ auth()->user()->name }}</div>
+                    <div class="text-xs text-light">{{ auth()->user()->role }}</div>
                 </div>
                 <div
-                    class="w-10 h-10 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold">
+                    class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
                     {{ substr(auth()->user()->name, 0, 1) }}
                 </div>
             </button>
 
             {{-- 3. Gunakan x-show untuk menampilkan/menyembunyikan menu dan tambahkan x-transition --}}
             <div x-show="open" x-transition
-                class="absolute right-0 mt-2 w-48 bg-[var(--color-surface)] rounded-md shadow-lg border border-slate-200 z-10">
-                <a href="#" class="block px-4 py-2 text-sm text-[var(--color-text-main)] hover:bg-slate-100">Profil
+                class="absolute right-0 mt-2 w-48 bg-background rounded-md shadow-lg border border-slate-200 z-10">
+                <a href="#" class="block px-4 py-2 text-sm text-black hover:bg-slate-200">Profil
                     Saya</a>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                        class="w-full text-left block px-4 py-2 text-sm text-[var(--color-danger)] hover:bg-slate-100">
+                        class="cursor-pointer w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-slate-200">
                         Logout
                     </button>
                 </form>

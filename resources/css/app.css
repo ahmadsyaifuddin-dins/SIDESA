@@ -71,3 +71,45 @@
         @apply font-bold;
     }
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| 5. Definisikan Komponen / Utility Class Kustom
+|--------------------------------------------------------------------------
+|
+| Kita membuat kelas sederhana untuk "membungkus" variabel CSS kita,
+| agar mudah digunakan di HTML dan dikenali oleh extension VS Code.
+|
+*/
+@layer components {
+    .bg-background {
+        @apply bg-[var(--color-background)];
+    }
+    .bg-primary {
+        @apply bg-[var(--color-primary)];
+    }
+    .hover\:bg-primary-dark:hover {
+        @apply bg-[var(--color-primary-dark)];
+    }
+    .text-primary {
+        @apply text-[var(--color-primary)];
+    }
+    .hover\:text-primary-dark:hover {
+        @apply text-[var(--color-primary-dark)];
+    }
+    .border-primary {
+        @apply border-[var(--color-primary)];
+    }
+    .ring-primary {
+        @apply ring-[var(--color-primary)];
+    }
+
+    .text-light {
+        @apply text-[var(--color-text-light)];
+    }
+    .text-main {
+        @apply text-[var(--color-text-main)];
+    }
+   
+}
