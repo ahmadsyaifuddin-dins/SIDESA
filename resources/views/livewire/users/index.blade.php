@@ -13,6 +13,39 @@
         @endif
     </div>
 
+    {{-- Baris Pencarian dan Filter sekarang menggunakan komponen --}}
+    <div class="mt-4 bg-surface p-4 rounded-lg shadow flex flex-col md:flex-row items-center gap-4">
+        <div class="w-full md:w-1/2 lg:w-1/3">
+            {{-- Menggunakan komponen input dengan slot untuk ikon --}}
+            <x-forms.input wire:model.live.debounce.300ms="search" placeholder="Cari berdasarkan nama atau email...">
+                <x-slot:leadingIcon>
+                    <svg class="w-4 h-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                </x-slot:leadingIcon>
+            </x-forms.input>
+        </div>
+        <div class="w-full md:w-auto">
+            {{-- Menggunakan komponen select --}}
+            <x-forms.select wire:model.live="filterRole">
+                <option value="">Semua Role</option>
+                <option value="superadmin">Superadmin</option>
+                <option value="admin">Admin</option>
+                <option value="pimpinan">Pimpinan</option>
+            </x-forms.select>
+        </div>
+        <div class="w-full md:w-auto">
+            {{-- Menggunakan komponen select --}}
+            <x-forms.select wire:model.live="filterStatus">
+                <option value="">Semua Status</option>
+                <option value="Aktif">Aktif</option>
+                <option value="Tidak Aktif">Tidak Aktif</option>
+            </x-forms.select>
+        </div>
+    </div>
+
     {{-- Konten Utama (Tabel) --}}
     <div class="mt-6 bg-surface p-6 rounded-lg shadow">
         {{-- Tabel Pengguna --}}

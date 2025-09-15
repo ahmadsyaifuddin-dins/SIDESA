@@ -48,20 +48,20 @@
                 <div class="space-y-6">
                     <div>
                         <label for="role" class="block text-sm font-medium text-main">Role</label>
-                        <select wire:model="role" id="role" class="mt-1 block w-full border-slate-300 rounded-md shadow-sm">
+                        <x-forms.select wire:model="role" id="role" class="mt-1 block w-full border-slate-300 rounded-md shadow-sm">
                             <option value="admin">Admin</option>
                             <option value="superadmin">Superadmin</option>
                             <option value="pimpinan">Pimpinan</option>
-                        </select>
+                        </x-forms.select>
                         <p class="mt-2 text-xs text-light">Role menentukan hak akses pengguna di dalam sistem.</p>
                         @error('role') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label for="status" class="block text-sm font-medium text-main">Status</label>
-                        <select wire:model="status" id="status" class="mt-1 block w-full border-slate-300 rounded-md shadow-sm">
+                        <x-forms.select wire:model="status" id="status" class="mt-1 block w-full border-slate-300 rounded-md shadow-sm">
                             <option value="Aktif">Aktif</option>
                             <option value="Tidak Aktif">Tidak Aktif</option>
-                        </select>
+                        </x-forms.select>
                         <p class="mt-2 text-xs text-light">Pengguna dengan status "Tidak Aktif" tidak akan bisa login.</p>
                         @error('status') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                     </div>
