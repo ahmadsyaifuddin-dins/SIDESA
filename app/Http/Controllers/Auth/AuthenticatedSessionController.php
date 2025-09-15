@@ -27,17 +27,31 @@ class AuthenticatedSessionController extends Controller
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ]);
-
-        // 1. Ambil nilai boolean dari checkbox 'remember'
+        
         $remember = $request->boolean('remember');
 
-        // 2. Masukkan variabel $remember sebagai argumen kedua di Auth::attempt()
         if (Auth::attempt($credentials, $remember)) {
+            $user = Auth::user();
+
+            if ($user->status !== 'Aktif') {
+                Auth::logout(); // Langsung logout lagi
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => 'Akun Anda tidak aktif. Silakan hubungi Superadmin.',
+                ])->onlyInput('email');
+            }
+
+            // MENCATAT WAKTU LOGIN: Update last_login_at ke waktu sekarang
+            
+            /** @var \App\Models\User $user */
+            $user->update(['last_login_at' => now()]);
+
             $request->session()->regenerate();
 
             return redirect()->intended(route('dashboard'));
         }
-
 
         return back()->withErrors([
             'email' => 'Email atau Password yang diberikan salah.',

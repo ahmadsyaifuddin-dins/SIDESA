@@ -32,7 +32,7 @@
             </button>
 
             {{-- 3. Gunakan x-show untuk menampilkan/menyembunyikan menu dan tambahkan x-transition --}}
-            <div x-show="open" x-transition
+            <div x-show="open" x-transition x-cloak
                 class="absolute right-0 mt-2 w-48 bg-background rounded-md shadow-lg border border-slate-200 z-10">
                 <a href="#" class="block px-4 py-2 text-sm text-black hover:bg-slate-200">Profil
                     Saya</a>
