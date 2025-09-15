@@ -1,3 +1,75 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* resources/css/app.css */
+
+/* 1. Import Font dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* 2. Import Entry Point Tailwind CSS */
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+|--------------------------------------------------------------------------
+| 3. Definisikan Design System Menggunakan CSS Variables
+|--------------------------------------------------------------------------
+|
+| Di sinilah kita mendefinisikan semua warna dan font default kita.
+| Ini adalah "Single Source of Truth" kita dalam mode config-less.
+|
+*/
+@layer base {
+    :root {
+        /* Warna Primer */
+        --color-primary: #2563eb;       /* blue-600 */
+        --color-primary-dark: #1d4ed8;  /* blue-700 */
+
+        /* Warna Sekunder */
+        --color-secondary: #0ea5e9;     /* sky-500 */
+        --color-secondary-dark: #0284c7;/* sky-600 */
+
+        /* Warna Netral & Teks */
+        --color-background: #f1f5f9;    /* slate-100 */
+        --color-surface: #ffffff;       /* white */
+        --color-text-main: #1e293b;     /* slate-800 */
+        --color-text-light: #64748b;    /* slate-500 */
+
+        /* Warna Notifikasi */
+        --color-success: #22c55e;       /* green-500 */
+        --color-warning: #f59e0b;       /* amber-500 */
+        --color-danger: #dc2626;        /* red-600 */
+        --color-danger-dark: #b91c1c;   /* red-700 */
+
+        /* Tipografi */
+        --font-sans: 'Plus Jakarta Sans', sans-serif;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| 4. Terapkan Style Dasar ke Elemen HTML
+|--------------------------------------------------------------------------
+|
+| Kita menggunakan variable yang sudah didefinisikan di atas.
+|
+*/
+@layer base {
+    body {
+        background-color: var(--color-background);
+        color: var(--color-text-main);
+        font-family: var(--font-sans);
+        @apply antialiased;
+    }
+
+    a {
+        color: var(--color-primary);
+        @apply transition-colors duration-200;
+        
+        &:hover {
+            color: var(--color-primary-dark);
+        }
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-bold;
+    }
+}
