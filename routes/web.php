@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+// Rute Halaman Welcome (Publik)
+Route::get('/', function () {
+    return view('welcome');
+})->name('welcome');
+
 // Route untuk tamu (yang belum login)
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
