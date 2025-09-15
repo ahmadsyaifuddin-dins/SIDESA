@@ -1,4 +1,4 @@
-<aside class="w-64 flex-shrink-0 bg-background border-r border-slate-200 flex flex-col">
+<aside class="w-64 flex-shrink-0 bg-surface border-r border-slate-200 flex flex-col">
     
     {{-- Bagian Logo / Judul Aplikasi --}}
     <div class="h-16 flex items-center justify-center border-b border-slate-200">
