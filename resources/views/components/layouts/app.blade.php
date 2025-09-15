@@ -9,12 +9,6 @@
     <title>{{ $title ?? 'SIDESA Anjir Muara' }}</title>
 
     @vite('resources/css/app.css')
-
-    <!-- CSS untuk menyembunyikan elemen x-cloak saat inisialisasi -->
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
-
     @livewireStyles
 </head>
 
@@ -26,6 +20,14 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             
             <x-ui.alert />
+            {{-- Emit browser event on initial load when session has flash (works with redirect/soft navigate) --}}
+            @php
+                $flashMessage = session('success') ?? session('error');
+                $flashType = session()->has('success') ? 'success' : (session()->has('error') ? 'error' : null);
+            @endphp
+            @if($flashMessage && $flashType)
+                <div x-data x-init="$dispatch('flash-message-display', [{ message: @js($flashMessage), type: @js($flashType) }])"></div>
+            @endif
 
             <x-navbar />
 
@@ -38,8 +40,7 @@
 
         <!-- PERBAIKAN PADA OVERLAY -->
         <div 
-             x-cloak
-             x-data="{ isMobile: window.innerWidth < 768 }"
+             x-data="{ isMobile: window.innerWidth < 768 }" x-cloak
              @resize.window="isMobile = window.innerWidth < 768"
              x-show="$store.sidebar.isOpen && isMobile" 
              @click="$store.sidebar.isOpen = false"
@@ -49,23 +50,6 @@
 
     @vite('resources/js/app.js')
 
-    <!-- JEMBATAN ANTARA SESSION LARAVEL & EVENT ALPINE -->
-    @if (session()->has('success') || session()->has('error'))
-        <script>
-            document.addEventListener('livewire:navigated', () => {
-                const flashData = @json([
-                    'message' => session('success') ?? session('error'),
-                    'type' => session()->has('success') ? 'success' : 'error'
-                ]);
-                
-                window.dispatchEvent(new CustomEvent('flash-message', {
-                    detail: [flashData]
-                }));
-            });
-        </script>
-    @endif
-
     @livewireScripts
 </body>
 </html>
-

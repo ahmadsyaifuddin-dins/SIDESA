@@ -1,7 +1,7 @@
 <!-- Komponen Notifikasi Modular -->
 <div 
     x-data="{ show: false, message: '', type: '' }"
-    x-on:flash-message.window="
+    x-on:flash-message-display.window="
         show = true; 
         message = $event.detail[0].message; 
         type = $event.detail[0].type;

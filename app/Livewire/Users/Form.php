@@ -36,7 +36,6 @@ class Form extends Component
 
     public $isEditMode = false;
 
-    // Method ini dijalankan saat komponen dimuat
     public function mount(User $user)
     {
         if ($user->exists) {
@@ -50,23 +49,15 @@ class Form extends Component
         }
     }
 
-    // Method ini dijalankan saat tombol simpan diklik
     public function save()
     {
-        // 1. Ambil semua aturan validasi dasar yang sudah didefinisikan dengan #[Rule]
         $rules = $this->getRules();
-        
-        // Aturan validasi untuk email harus unik
         $rules['email'] = 'required|email|max:255|unique:users,email,' . ($this->isEditMode ? $this->user->id : '');
-
-        // Validasi password hanya jika sedang membuat user baru
         if (!$this->isEditMode) {
             $rules['password'] = 'required|string|min:8|confirmed';
         }
-
         $validated = $this->validate($rules);
 
-        // Hapus password dari data jika kosong (saat edit)
         if (empty($validated['password'])) {
             unset($validated['password']);
         } else {
@@ -74,19 +65,18 @@ class Form extends Component
         }
 
         if ($this->isEditMode) {
-            // Update data user
             $this->user->update($validated);
+            // Persist flash message for next request
             session()->flash('success', 'Pengguna berhasil diperbarui.');
         } else {
-            // Buat user baru
             User::create($validated);
+            // Persist flash message for next request
             session()->flash('success', 'Pengguna berhasil ditambahkan.');
         }
 
         return $this->redirect(route('users.index'), navigate: true);
     }
 
-    // Mengatur judul halaman secara dinamis
     #[Title('Form Pengguna')]
     public function render()
     {
