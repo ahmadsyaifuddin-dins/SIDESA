@@ -15,7 +15,7 @@ return new class extends Migration
             // Menambahkan kolom-kolom baru kita setelah kolom 'email'
             $table->string('jabatan')->nullable()->after('email');
             $table->string('profile_photo_path')->nullable()->after('password');
-            $table->enum('role', ['superadmin', 'admin'])->default('admin')->after('profile_photo_path');
+            $table->enum('role', ['superadmin', 'admin','pimpinan'])->default('admin')->after('profile_photo_path');
             $table->enum('status', ['Aktif', 'Tidak Aktif'])->default('Aktif')->after('role');
             $table->timestamp('last_login_at')->nullable()->after('status');
         });

@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Daftarkan alias middleware Anda di sini
+        $middleware->alias([
+            'superadmin' => \App\Http\Middleware\EnsureUserIsSuperAdmin::class,
+            'can-access-users' => \App\Http\Middleware\EnsureUserCanAccessUsersPage::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

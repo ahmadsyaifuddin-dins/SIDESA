@@ -1,13 +1,14 @@
-<header
-    class="h-16 bg-surface border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
-
-    {{-- Sisi Kiri Navbar --}}
+<header class="h-16 bg-surface border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
     <div class="flex items-center gap-4">
-        {{-- Tombol Hamburger untuk Mobile --}}
-        <button class="md:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[var(--color-text-main)]" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        {{-- Tombol Hamburger sekarang berfungsi! --}}
+        <button @click="$store.sidebar.toggle()" class="md:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-main" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
+
+        {{-- (Opsional) Tombol untuk collapse di desktop --}}
+        <button @click="$store.sidebar.toggle()" class="hidden md:block md:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-main">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
         </button>
     </div>
