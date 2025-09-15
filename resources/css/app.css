@@ -16,6 +16,11 @@
 |
 */
 @layer base {
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+
     :root {
         /* Warna Primer */
         --color-primary: #2563eb;       /* blue-600 */
@@ -86,6 +91,9 @@
     .bg-background {
         @apply bg-[var(--color-background)];
     }
+    .bg-surface {
+        @apply bg-[var(--color-surface)];
+    }
     .bg-primary {
         @apply bg-[var(--color-primary)];
     }
@@ -112,4 +120,13 @@
         @apply text-[var(--color-text-main)];
     }
    
+}
+
+/*
+|--------------------------------------------------------------------------
+| 6. Aturan Spesifik & Perbaikan Bug
+|--------------------------------------------------------------------------
+*/
+.guest-layout {
+    overflow: hidden;
 }
