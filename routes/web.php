@@ -10,9 +10,7 @@ Route::get('/', function () {
 
 // Route untuk tamu (yang belum login)
 Route::middleware('guest')->group(function () {
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
-
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 });
 
@@ -22,26 +20,30 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    
     Route::get('/profile', \App\Livewire\Profile\UpdateForm::class)->name('profile.edit');
 
-    // Grup Rute Manajemen Pengguna
+    // Grup Rute Manajemen Pengguna dengan urutan yang benar
     Route::prefix('users')->as('users.')->group(function () {
+        
+        // Rute paling spesifik diletakkan paling atas
+        Route::get('/create', \App\Livewire\Users\Form::class)
+            ->middleware('superadmin')
+            ->name('create');
+        
+        // Rute umum (index)
+        Route::get('/', \App\Livewire\Users\Index::class)
+            ->middleware('can-access-users')
+            ->name('index');
+        
+        // Rute dinamis/wildcard diletakkan di bawah rute spesifik
+        Route::get('/{user}', \App\Livewire\Users\Show::class)
+            ->middleware('can-access-users')
+            ->name('show');
 
-        // Rute yang bisa diakses Superadmin & Pimpinan
-        Route::middleware('can-access-users')->group(function () {
-            Route::get('/', \App\Livewire\Users\Index::class)->name('index');
-            Route::get('/{user}', \App\Livewire\Users\Show::class)->name('show');
-        });
-
-        // Rute yang HANYA bisa diakses Superadmin
-        Route::middleware('superadmin')->group(function () {
-            Route::get('/create', \App\Livewire\Users\Form::class)->name('create');
-            Route::get('/{user}/edit', \App\Livewire\Users\Form::class)->name('edit');
-        });
+        Route::get('/{user}/edit', \App\Livewire\Users\Form::class)
+            ->middleware('superadmin')
+            ->name('edit');
     });
-
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
-
-    // Nanti, semua route admin lainnya (data warga, surat, dll) letakkan di dalam grup ini
 });
