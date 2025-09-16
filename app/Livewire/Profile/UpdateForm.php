@@ -21,6 +21,7 @@ class UpdateForm extends Component
     public string $nik = '';
     public string $name = '';
     public string $email = '';
+    public $no_hp = '';
     public $photo; // Properti untuk file upload baru
     public $jenis_kelamin = '';
     public $tanggal_lahir = '';
@@ -37,6 +38,7 @@ class UpdateForm extends Component
         $this->nik = $user->nik;
         $this->name = $user->name;
         $this->email = $user->email;
+        $this->no_hp = $user->no_hp;
         $this->jenis_kelamin = $user->jenis_kelamin;
         $this->tanggal_lahir = $user->tanggal_lahir;
         $this->alamat = $user->alamat;
@@ -51,6 +53,7 @@ class UpdateForm extends Component
             'nik' => ['nullable', 'string', 'max:50'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'no_hp' => ['nullable', 'string', 'max:20'],
             'photo' => ['nullable', 'image', 'max:1024'],
             'jenis_kelamin' => ['nullable', 'in:Laki-laki,Perempuan'],
             'tanggal_lahir' => ['nullable', 'date'],

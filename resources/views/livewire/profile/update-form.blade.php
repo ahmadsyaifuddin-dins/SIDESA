@@ -50,6 +50,11 @@
                         @error('email') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                     </div>
                     <div>
+                        <label for="no_hp" class="block text-sm font-medium text-main">No HP</label>
+                        <x-forms.input wire:model="no_hp" id="no_hp" type="text" class="mt-1" />
+                        @error('no_hp') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
                         <label for="jenis_kelamin" class="block text-sm font-medium text-main">Jenis Kelamin</label>
                         <x-forms.select wire:model="jenis_kelamin" id="jenis_kelamin" class="mt-1">
                             <option value="">Pilih Jenis Kelamin</option>
