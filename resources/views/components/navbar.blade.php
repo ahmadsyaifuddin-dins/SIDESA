@@ -6,7 +6,7 @@
         </button>
 
         {{-- (Opsional) Tombol untuk collapse di desktop --}}
-        <button @click="$store.sidebar.toggle()" class="hidden md:block md:hidden">
+        <button @click="$store.sidebar.toggle()" class="hidden md:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-main">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
@@ -25,16 +25,22 @@
                     <div class="font-semibold text-sm text-main">{{ auth()->user()->name }}</div>
                     <div class="text-xs text-light">{{ auth()->user()->role }}</div>
                 </div>
-                <div
-                    class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
-                    {{ substr(auth()->user()->name, 0, 1) }}
+                <div class="w-10 h-10 rounded-full">
+                    @if (auth()->user()->profile_photo_path)
+                    <img src="{{ asset(Auth::user()->profile_photo_path) }}"
+                        alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                    @else
+                    <div class="w-full h-full rounded-full bg-primary text-white flex items-center justify-center font-bold">
+                        {{ substr(auth()->user()->name, 0, 1) }}
+                    </div>
+                    @endif
                 </div>
             </button>
 
             {{-- 3. Gunakan x-show untuk menampilkan/menyembunyikan menu dan tambahkan x-transition --}}
             <div x-show="open" x-transition x-cloak
                 class="absolute right-0 mt-2 w-48 bg-background rounded-md shadow-lg border border-slate-200 z-10">
-                <a href="#" class="block px-4 py-2 text-sm text-black hover:bg-slate-200">Profil
+                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-black hover:bg-slate-200">Profil
                     Saya</a>
 
                 <form method="POST" action="{{ route('logout') }}">

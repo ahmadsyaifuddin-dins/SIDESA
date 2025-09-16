@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/profile', \App\Livewire\Profile\UpdateForm::class)->name('profile.edit');
+
     // Grup Rute Manajemen Pengguna (Hanya Superadmin)
     Route::middleware('superadmin')->prefix('users')->as('users.')->group(function () {
         Route::get('/', \App\Livewire\Users\Index::class)->name('index');
