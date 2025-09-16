@@ -28,7 +28,7 @@
                 <div class="w-10 h-10 rounded-full">
                     @if (auth()->user()->profile_photo_path)
                     <img src="{{ asset(Auth::user()->profile_photo_path) }}"
-                        alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                        alt="{{ Auth::user()->name }}" class="w-full h-full object-cover rounded-full">
                     @else
                     <div class="w-full h-full rounded-full bg-primary text-white flex items-center justify-center font-bold">
                         {{ substr(auth()->user()->name, 0, 1) }}
