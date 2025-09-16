@@ -35,6 +35,11 @@
                 <!-- Kolom Data Diri (Menggunakan Komponen Baru) -->
                 <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
+                        <label for="nik" class="block text-sm font-medium text-main">NIK</label>
+                        <x-forms.input wire:model="nik" id="nik" type="text" class="mt-1" />
+                        @error('nik') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
                         <label for="name" class="block text-sm font-medium text-main">Nama</label>
                         <x-forms.input wire:model="name" id="name" type="text" class="mt-1" />
                         @error('name') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
@@ -44,7 +49,7 @@
                         <x-forms.input wire:model="email" id="email" type="email" class="mt-1" />
                         @error('email') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                     </div>
-                     <div>
+                    <div>
                         <label for="jenis_kelamin" class="block text-sm font-medium text-main">Jenis Kelamin</label>
                         <x-forms.select wire:model="jenis_kelamin" id="jenis_kelamin" class="mt-1">
                             <option value="">Pilih Jenis Kelamin</option>
