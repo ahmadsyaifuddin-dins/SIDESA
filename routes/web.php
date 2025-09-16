@@ -24,17 +24,21 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profile', \App\Livewire\Profile\UpdateForm::class)->name('profile.edit');
 
-    // Grup Rute Manajemen Pengguna (Hanya Superadmin)
-    Route::middleware('superadmin')->prefix('users')->as('users.')->group(function () {
-        Route::get('/', \App\Livewire\Users\Index::class)->name('index');
-        Route::get('/create', \App\Livewire\Users\Form::class)->name('create');
-        Route::get('/{user}/edit', \App\Livewire\Users\Form::class)->name('edit');
-    });
+    // Grup Rute Manajemen Pengguna
+    Route::prefix('users')->as('users.')->group(function () {
 
-    // Rute Index (Read-Only) sekarang bisa diakses Superadmin & Pimpinan
-    Route::get('/users', \App\Livewire\Users\Index::class)
-    ->middleware('can-access-users') // <-- Gunakan middleware baru di sini
-    ->name('users.index');
+        // Rute yang bisa diakses Superadmin & Pimpinan
+        Route::middleware('can-access-users')->group(function () {
+            Route::get('/', \App\Livewire\Users\Index::class)->name('index');
+            Route::get('/{user}', \App\Livewire\Users\Show::class)->name('show');
+        });
+
+        // Rute yang HANYA bisa diakses Superadmin
+        Route::middleware('superadmin')->group(function () {
+            Route::get('/create', \App\Livewire\Users\Form::class)->name('create');
+            Route::get('/{user}/edit', \App\Livewire\Users\Form::class)->name('edit');
+        });
+    });
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
