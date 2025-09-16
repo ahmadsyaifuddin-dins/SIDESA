@@ -23,7 +23,7 @@
                             <th scope="col" class="px-6 py-3 font-semibold">Waktu</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-slate-300">
                         @forelse ($logs as $log)
                             <tr class="border-b transition-colors duration-200 {{ $loop->iteration % 2 == 0 ? 'bg-slate-50' : 'bg-white' }} hover:bg-blue-50">
                                 {{-- Deskripsi dengan Ikon --}}
