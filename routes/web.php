@@ -24,6 +24,12 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/profile', \App\Livewire\Profile\UpdateForm::class)->name('profile.edit');
 
+     // --- Rute Pengaturan & Manajemen (Khusus Superadmin) ---
+     Route::middleware('superadmin')->group(function () {
+        // Rute Log Aktivitas
+        Route::get('/activity-log', \App\Livewire\ActivityLog\Index::class)->name('activity-log.index');
+    });
+
     // Grup Rute Manajemen Pengguna dengan urutan yang benar
     Route::prefix('users')->as('users.')->group(function () {
         

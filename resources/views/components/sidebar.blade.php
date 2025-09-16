@@ -91,6 +91,20 @@
                 </a>
             </li>
 
+            {{-- MENU BARU: Log Aktivitas (Hanya Superadmin) --}}
+            @if (auth()->user()->role === 'superadmin')
+            <li>
+                <a href="{{ route('activity-log.index') }}" wire:navigate class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors
+                  {{ request()->routeIs('activity-log.index') ? 'bg-primary text-white' : 'text-main hover:bg-slate-200' }}">
+                    {{-- Icon Log (Heroicons: Document Report) --}}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v2a1 1 0 102 0v-2zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Log Aktivitas</span>
+                </a>
+            </li>
+            @endif
+            
         </ul>
     </nav>
 </aside>
