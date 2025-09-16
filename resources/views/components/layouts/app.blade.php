@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>{{ $title ?? 'SIDESA Anjir Muara' }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('icon-app.png') }}">
 
     @vite('resources/css/app.css')
     @livewireStyles
