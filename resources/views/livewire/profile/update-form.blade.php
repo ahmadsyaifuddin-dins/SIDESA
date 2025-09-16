@@ -37,6 +37,12 @@
                 <!-- Kolom Data Diri -->
                 <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
+                        <label for="nik" class="block text-sm font-medium text-main">NIK</label>
+                        <input type="text" wire:model="nik" id="nik"
+                            class="mt-1 block w-full border-slate-300 rounded-md shadow-sm">
+                        @error('nik') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
                         <label for="name" class="block text-sm font-medium text-main">Nama</label>
                         <input type="text" wire:model="name" id="name"
                             class="mt-1 block w-full border-slate-300 rounded-md shadow-sm">

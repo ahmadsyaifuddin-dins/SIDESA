@@ -18,6 +18,7 @@ class UpdateForm extends Component
     use WithFileUploads;
 
     // Properti untuk form informasi profil
+    public string $nik = '';
     public string $name = '';
     public string $email = '';
     public $photo; // Properti untuk file upload baru
@@ -33,6 +34,7 @@ class UpdateForm extends Component
     public function mount()
     {
         $user = Auth::user();
+        $this->nik = $user->nik;
         $this->name = $user->name;
         $this->email = $user->email;
         $this->jenis_kelamin = $user->jenis_kelamin;
@@ -46,6 +48,7 @@ class UpdateForm extends Component
         $user = Auth::user();
 
         $validated = $this->validate([
+            'nik' => ['nullable', 'string', 'max:50'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'photo' => ['nullable', 'image', 'max:1024'],
@@ -76,6 +79,8 @@ class UpdateForm extends Component
         $user->update($validated);
 
         $this->dispatch('flash-message-display', ['message' => 'Informasi profil berhasil diperbarui.', 'type' => 'success']);
+
+        $this->dispatch('profile-updated');
     }
 
     public function updatePassword()

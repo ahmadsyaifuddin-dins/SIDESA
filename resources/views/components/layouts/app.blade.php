@@ -29,7 +29,7 @@
                 <div x-data x-init="$dispatch('flash-message-display', [{ message: @js($flashMessage), type: @js($flashType) }])"></div>
             @endif
 
-            <x-navbar />
+            <livewire:ui.navbar />
 
             <main class="flex-1 p-6 overflow-y-auto">
                 {{ $slot }}
