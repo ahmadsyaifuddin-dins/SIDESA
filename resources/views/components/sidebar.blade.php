@@ -52,8 +52,8 @@
 
             {{-- Item Menu Data Warga --}}
             <li>
-                <a href="#" {{-- Ganti href nanti --}}
-                    class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors text-main hover:bg-slate-200">
+                <a href="{{ route('warga.index') }}" wire:navigate class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors
+                  {{ request()->routeIs('warga.index') ? 'bg-primary text-white' : 'text-main hover:bg-slate-200' }}">
                     {{-- Icon Data Warga (Heroicons) --}}
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path

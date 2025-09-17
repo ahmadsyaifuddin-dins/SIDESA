@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/profile', \App\Livewire\Profile\UpdateForm::class)->name('profile.edit');
 
+    Route::get('/warga', \App\Livewire\Warga\Index::class)->name('warga.index');
+
      // --- Rute Pengaturan & Manajemen (Khusus Superadmin) ---
      Route::middleware('superadmin')->group(function () {
         // Rute Log Aktivitas
