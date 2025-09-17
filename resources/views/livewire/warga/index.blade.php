@@ -14,21 +14,23 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('livewire:initialized', () => {
-        // Ambil data awal dari server saat halaman pertama kali dimuat
+    // --- PERBAIKAN FINAL ---
+    // Gunakan 'livewire:navigated' agar script berjalan setiap kali halaman ini ditampilkan via SPA navigation.
+    document.addEventListener('livewire:navigated', () => {
+        // Ambil data awal yang di-render oleh PHP. Ini adalah cara paling andal.
         const initialStats = @json($stats);
         const initialChartData = @json($chartData);
         
         let wargaChart = null;
         
-        // Simpan referensi ke elemen DOM agar tidak perlu query berulang kali
         const statTotalEl = document.getElementById('stat-total');
         const statLakiLakiEl = document.getElementById('stat-laki-laki');
         const statPerempuanEl = document.getElementById('stat-perempuan');
         const statTotalKkEl = document.getElementById('stat-total-kk');
         const chartCanvas = document.getElementById('wargaChart');
 
-        // Fungsi terpusat untuk mengupdate semua elemen di dasbor
+        if (!chartCanvas) return;
+
         function updateDashboard(stats, chartData) {
             if (!stats || !chartData) return;
 
@@ -40,11 +42,9 @@
 
             // 2. Update atau inisialisasi chart
             if (wargaChart) {
-                // Jika chart sudah ada, cukup update datanya
                 wargaChart.data.datasets[0].data = [chartData.laki_laki, chartData.perempuan];
                 wargaChart.update();
             } else {
-                // Jika belum ada, buat chart baru
                 wargaChart = new Chart(chartCanvas.getContext('2d'), {
                     type: 'bar',
                     data: {
@@ -67,7 +67,7 @@
             }
         }
 
-        // Panggil fungsi update untuk pertama kali dengan data awal
+        // Panggil fungsi update untuk pertama kali dengan data yang di-render dari PHP.
         updateDashboard(initialStats, initialChartData);
 
         // Dengarkan event `dashboard-updated` dari Livewire untuk pembaruan selanjutnya

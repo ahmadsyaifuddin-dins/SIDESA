@@ -108,6 +108,9 @@ class Index extends Component
         
         $warga = $wargaQuery->with('kartuKeluarga')->latest()->paginate($this->perPage);
 
+        // --- PERBAIKAN KRUSIAL ---
+        // Selalu teruskan data stats dan chartData ke view agar selalu tersedia
+        // baik saat pemuatan awal maupun setelah navigasi.
         return view('livewire.warga.index', [
             'warga' => $warga,
             'stats' => $stats,
