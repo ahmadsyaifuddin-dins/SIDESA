@@ -21,30 +21,38 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-    
+
     Route::get('/profile', \App\Livewire\Profile\UpdateForm::class)->name('profile.edit');
 
-    Route::get('/warga', \App\Livewire\Warga\Index::class)->name('warga.index');
+    // --- GRUP RUTE MANAJEMEN WARGA ---
+    Route::prefix('warga')->as('warga.')->group(function () {
+        // Rute untuk halaman utama (tabel data)
+        Route::get('/', \App\Livewire\Warga\Index::class)->name('index');
 
-     // --- Rute Pengaturan & Manajemen (Khusus Superadmin) ---
-     Route::middleware('superadmin')->group(function () {
+        // Rute untuk halaman detail warga (BARU)
+        // Pastikan ini di bawah rute spesifik lainnya jika ada nanti
+        Route::get('/{warga}', \App\Livewire\Warga\Show::class)->name('show');
+    });
+    
+    // --- Rute Pengaturan & Manajemen (Khusus Superadmin) ---
+    Route::middleware('superadmin')->group(function () {
         // Rute Log Aktivitas
         Route::get('/activity-log', \App\Livewire\ActivityLog\Index::class)->name('activity-log.index');
     });
 
     // Grup Rute Manajemen Pengguna dengan urutan yang benar
     Route::prefix('users')->as('users.')->group(function () {
-        
+
         // Rute paling spesifik diletakkan paling atas
         Route::get('/create', \App\Livewire\Users\Form::class)
             ->middleware('superadmin')
             ->name('create');
-        
+
         // Rute umum (index)
         Route::get('/', \App\Livewire\Users\Index::class)
             ->middleware('can-access-users')
             ->name('index');
-        
+
         // Rute dinamis/wildcard diletakkan di bawah rute spesifik
         Route::get('/{user}', \App\Livewire\Users\Show::class)
             ->middleware('can-access-users')

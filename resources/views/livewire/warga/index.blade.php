@@ -121,7 +121,7 @@
                         </td>
                         <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                             <div class="flex items-center justify-end gap-x-2">
-                                <a href="#" class="text-blue-600 hover:text-blue-900">Lihat</a>
+                                <a href="{{ route('warga.show', $item->id) }}" class="text-blue-600 hover:text-blue-900">Lihat</a>
                                 <a href="#" class="text-yellow-600 hover:text-yellow-900">Edit</a>
                             </div>
                         </td>
