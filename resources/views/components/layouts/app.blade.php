@@ -15,7 +15,6 @@
 </head>
 
 <body class="bg-background text-main antialiased">
-
     <div x-data class="flex h-screen">
         <x-sidebar />
 

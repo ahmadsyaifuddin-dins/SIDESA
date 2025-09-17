@@ -18,10 +18,8 @@ class Index extends Component
 
     public string $search = '';
     public int $perPage = 15;
-
     public bool $showImportModal = false;
     public $file;
-
     public bool $showFilters = false;
     public string $filterJenisKelamin = '';
     public string $filterAgama = '';
@@ -29,18 +27,12 @@ class Index extends Component
     public ?int $filterUsiaMax = null;
 
     public array $opsiAgama = [];
-    public array $opsiPendidikan = [];
-    
-    // --- PROPERTI UNTUK SINKRONISASI DATA ---
-    public array $stats = [];
-    public array $chartData = [];
 
     protected $listeners = ['refresh-data' => '$refresh'];
 
     public function mount()
     {
         $this->opsiAgama = config('options.agama', []);
-        $this->opsiPendidikan = config('options.pendidikan', []);
     }
     
     public function updated($propertyName)
@@ -61,44 +53,24 @@ class Index extends Component
         $this->resetPage();
     }
 
-    // Method untuk refresh chart
-    public function refreshChart()
-    {
-        $this->dispatch('refresh-chart');
-    }
-
     public function import()
     {
-        $this->validate([
-            'file' => 'required|mimes:xlsx,xls|max:5240',
-        ]);
-
+        $this->validate(['file' => 'required|mimes:xlsx,xls|max:5240']);
         try {
             $importer = new WargaImport;
             Excel::import($importer, $this->file);
-            
             $count = $importer->wargaBerhasilDiimpor;
             if ($count > 0) {
-                $this->dispatch('flash-message-display', [
-                    'message' => "Impor Selesai! Sebanyak {$count} data warga berhasil diproses.",
-                    'type' => 'success'
-                ]);
+                $this->dispatch('flash-message-display', ['message' => "Impor Selesai! Sebanyak {$count} data warga berhasil diproses.",'type' => 'success']);
             } else {
-                 $this->dispatch('flash-message-display', [
-                    'message' => 'Impor selesai, namun tidak ada data warga baru yang dapat diproses. Pastikan format file benar.',
-                    'type' => 'error'
-                ]);
+                 $this->dispatch('flash-message-display', ['message' => 'Impor selesai, namun tidak ada data warga baru yang dapat diproses. Pastikan format file benar.', 'type' => 'error']);
             }
             $this->closeImportModal();
             $this->dispatch('refresh-data');
-
         } catch (\Throwable $e) {
             Log::error('EXCEPTION SAAT IMPOR: ' . $e->getMessage());
             Log::error($e->getTraceAsString());
-            $this->dispatch('flash-message-display', [
-                'message' => 'Terjadi kesalahan fatal saat mengimpor. Silakan cek log untuk detail.',
-                'type' => 'error'
-            ]);
+            $this->dispatch('flash-message-display', ['message' => 'Terjadi kesalahan fatal saat mengimpor. Silakan cek log untuk detail.','type' => 'error']);
             $this->closeImportModal();
         }
     }
@@ -118,22 +90,29 @@ class Index extends Component
             ->when($this->filterUsiaMin, fn($q) => $q->where('tanggal_lahir', '<=', Carbon::now()->subYears($this->filterUsiaMin)))
             ->when($this->filterUsiaMax, fn($q) => $q->where('tanggal_lahir', '>=', Carbon::now()->subYears($this->filterUsiaMax)));
         
-        $this->stats = [
+        // Hitung statistik sebagai variabel lokal
+        $stats = [
             'total' => $wargaQuery->count(),
             'laki_laki' => (clone $wargaQuery)->where('jenis_kelamin', 'LAKI-LAKI')->count(),
             'perempuan' => (clone $wargaQuery)->where('jenis_kelamin', 'PEREMPUAN')->count(),
             'total_kk' => (clone $wargaQuery)->distinct('kartu_keluarga_id')->count('kartu_keluarga_id'),
         ];
         
-        $this->chartData = [
-            'laki_laki' => $this->stats['laki_laki'],
-            'perempuan' => $this->stats['perempuan'],
+        $chartData = [
+            'laki_laki' => $stats['laki_laki'],
+            'perempuan' => $stats['perempuan'],
         ];
+        
+        // Kirim event dengan data terbaru pada setiap render
+        $this->dispatch('dashboard-updated', stats: $stats, chartData: $chartData);
         
         $warga = $wargaQuery->with('kartuKeluarga')->latest()->paginate($this->perPage);
 
         return view('livewire.warga.index', [
             'warga' => $warga,
+            'stats' => $stats,
+            'chartData' => $chartData,
         ]);
     }
 }
+
