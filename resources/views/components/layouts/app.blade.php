@@ -8,6 +8,7 @@
 
     <title>{{ $title ?? 'SIDESA Anjir Muara' }}</title>
     <link rel="icon" type="image/png" href="{{ asset('icon-app.png') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     @vite('resources/css/app.css')
     @livewireStyles
@@ -50,7 +51,7 @@
     </div>
 
     @vite('resources/js/app.js')
-
     @livewireScripts
+    @stack('scripts')
 </body>
 </html>

@@ -3,8 +3,8 @@
 namespace App\Livewire\Warga;
 
 use App\Imports\WargaImport;
-use App\Models\KartuKeluarga;
 use App\Models\Warga;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -22,16 +22,49 @@ class Index extends Component
     public bool $showImportModal = false;
     public $file;
 
-    // Metode ini akan otomatis dijalankan setiap kali properti $search diubah.
-    public function updatingSearch(): void
+    public bool $showFilters = false;
+    public string $filterJenisKelamin = '';
+    public string $filterAgama = '';
+    public ?int $filterUsiaMin = null;
+    public ?int $filterUsiaMax = null;
+
+    public array $opsiAgama = [];
+    public array $opsiPendidikan = [];
+    
+    // --- PROPERTI UNTUK SINKRONISASI DATA ---
+    public array $stats = [];
+    public array $chartData = [];
+
+    protected $listeners = ['refresh-data' => '$refresh'];
+
+    public function mount()
     {
+        $this->opsiAgama = config('options.agama', []);
+        $this->opsiPendidikan = config('options.pendidikan', []);
+    }
+    
+    public function updated($propertyName)
+    {
+        if (in_array($propertyName, ['search', 'perPage', 'filterJenisKelamin', 'filterAgama', 'filterUsiaMin', 'filterUsiaMax'])) {
+            $this->resetPage();
+        }
+    }
+
+    public function toggleFilters()
+    {
+        $this->showFilters = !$this->showFilters;
+    }
+
+    public function resetFilters()
+    {
+        $this->reset(['filterJenisKelamin', 'filterAgama', 'filterUsiaMin', 'filterUsiaMax', 'search']);
         $this->resetPage();
     }
 
-    // Metode ini akan otomatis dijalankan setiap kali properti $perPage diubah.
-    public function updatingPerPage(): void
+    // Method untuk refresh chart
+    public function refreshChart()
     {
-        $this->resetPage();
+        $this->dispatch('refresh-chart');
     }
 
     public function import()
@@ -41,33 +74,27 @@ class Index extends Component
         ]);
 
         try {
-            // Buat instance dari importer untuk bisa mengambil hasil hitungannya
             $importer = new WargaImport;
-
-            // Jalankan impor secara langsung
             Excel::import($importer, $this->file);
-
-            // Ambil jumlah data yang berhasil diimpor
+            
             $count = $importer->wargaBerhasilDiimpor;
-
             if ($count > 0) {
                 $this->dispatch('flash-message-display', [
                     'message' => "Impor Selesai! Sebanyak {$count} data warga berhasil diproses.",
                     'type' => 'success'
                 ]);
             } else {
-                $this->dispatch('flash-message-display', [
+                 $this->dispatch('flash-message-display', [
                     'message' => 'Impor selesai, namun tidak ada data warga baru yang dapat diproses. Pastikan format file benar.',
                     'type' => 'error'
                 ]);
             }
-
             $this->closeImportModal();
             $this->dispatch('refresh-data');
+
         } catch (\Throwable $e) {
             Log::error('EXCEPTION SAAT IMPOR: ' . $e->getMessage());
             Log::error($e->getTraceAsString());
-
             $this->dispatch('flash-message-display', [
                 'message' => 'Terjadi kesalahan fatal saat mengimpor. Silakan cek log untuk detail.',
                 'type' => 'error'
@@ -84,16 +111,26 @@ class Index extends Component
 
     public function render()
     {
-        $warga = Warga::with('kartuKeluarga')
-            ->when($this->search, function ($query) {
-                $query->where('nama_lengkap', 'like', "%{$this->search}%")
-                    ->orWhere('nik', 'like', "%{$this->search}%")
-                    ->orWhereHas('kartuKeluarga', function ($subQuery) {
-                        $subQuery->where('nomor_kk', 'like', "%{$this->search}%");
-                    });
-            })
-            ->latest()
-            ->paginate($this->perPage);
+        $wargaQuery = Warga::query()
+            ->when($this->search, fn($q) => $q->where(fn($sq) => $sq->where('nama_lengkap', 'like', "%{$this->search}%")->orWhere('nik', 'like', "%{$this->search}%")->orWhereHas('kartuKeluarga', fn($kq) => $kq->where('nomor_kk', 'like', "%{$this->search}%"))))
+            ->when($this->filterJenisKelamin, fn($q) => $q->where('jenis_kelamin', $this->filterJenisKelamin))
+            ->when($this->filterAgama, fn($q) => $q->where('agama', $this->filterAgama))
+            ->when($this->filterUsiaMin, fn($q) => $q->where('tanggal_lahir', '<=', Carbon::now()->subYears($this->filterUsiaMin)))
+            ->when($this->filterUsiaMax, fn($q) => $q->where('tanggal_lahir', '>=', Carbon::now()->subYears($this->filterUsiaMax)));
+        
+        $this->stats = [
+            'total' => $wargaQuery->count(),
+            'laki_laki' => (clone $wargaQuery)->where('jenis_kelamin', 'LAKI-LAKI')->count(),
+            'perempuan' => (clone $wargaQuery)->where('jenis_kelamin', 'PEREMPUAN')->count(),
+            'total_kk' => (clone $wargaQuery)->distinct('kartu_keluarga_id')->count('kartu_keluarga_id'),
+        ];
+        
+        $this->chartData = [
+            'laki_laki' => $this->stats['laki_laki'],
+            'perempuan' => $this->stats['perempuan'],
+        ];
+        
+        $warga = $wargaQuery->with('kartuKeluarga')->latest()->paginate($this->perPage);
 
         return view('livewire.warga.index', [
             'warga' => $warga,
