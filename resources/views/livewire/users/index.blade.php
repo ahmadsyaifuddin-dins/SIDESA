@@ -1,13 +1,19 @@
 <div>
     {{-- Header Halaman --}}
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h2 class="text-2xl font-bold">Daftar Pengguna</h2>
+    
         @if(auth()->user()->role === 'superadmin')
-            <a href="{{ route('users.create') }}" wire:navigate class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
+            <a href="{{ route('users.create') }}" 
+               wire:navigate
+                 class="bg-primary hover:bg-primary-dark text-white font-semibold 
+                  py-2 px-2 sm:px-4 
+                  rounded-md transition-colors">
                 Tambah Pengguna
             </a>
         @endif
     </div>
+    
 
     {{-- Baris Pencarian dan Filter --}}
     <div class="mt-4 bg-surface p-4 rounded-lg shadow flex flex-col md:flex-row items-center gap-4">
