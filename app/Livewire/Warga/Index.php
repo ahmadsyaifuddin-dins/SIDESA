@@ -21,10 +21,22 @@ class Index extends Component
     public bool $showImportModal = false;
     public $file;
 
+    // Metode ini akan otomatis dijalankan setiap kali properti $search diubah.
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    // Metode ini akan otomatis dijalankan setiap kali properti $perPage diubah.
+    public function updatingPerPage(): void
+    {
+        $this->resetPage();
+    }
+
     public function import()
     {
         $this->validate([
-            'file' => 'required|mimes:xlsx,xls|max:10240',
+            'file' => 'required|mimes:xlsx,xls|max:5240',
         ]);
 
         try {
