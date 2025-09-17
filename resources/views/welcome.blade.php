@@ -7,10 +7,17 @@
                     <a href="{{ route('welcome') }}" class="text-2xl font-bold text-primary">SIDESA</a>
                 </div>
                 <div>
+                    @auth
+                    <a href="{{ route('dashboard') }}"
+                        class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
+                        Dashboard
+                    </a>
+                    @else
                     <a href="{{ route('login') }}"
                         class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
                         Login Administrator
                     </a>
+                    @endauth
                 </div>
             </div>
         </div>
