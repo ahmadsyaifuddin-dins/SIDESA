@@ -29,9 +29,13 @@ Route::middleware('auth')->group(function () {
         // Rute untuk halaman utama (tabel data)
         Route::get('/', \App\Livewire\Warga\Index::class)->name('index');
 
-        // Rute untuk halaman detail warga (BARU)
-        // Pastikan ini di bawah rute spesifik lainnya jika ada nanti
+        // Rute untuk menampilkan form tambah warga (harus di atas rute {warga})
+        Route::get('/create', \App\Livewire\Warga\Form::class)->name('create');
+        
         Route::get('/{warga}', \App\Livewire\Warga\Show::class)->name('show');
+
+        // Rute untuk menampilkan form edit warga
+        Route::get('/{warga}/edit', \App\Livewire\Warga\Form::class)->name('edit');
     });
     
     // --- Rute Pengaturan & Manajemen (Khusus Superadmin) ---

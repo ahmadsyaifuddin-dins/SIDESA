@@ -3,6 +3,7 @@
 namespace App\Livewire\Warga;
 
 use App\Imports\WargaImport;
+use App\Models\KartuKeluarga;
 use App\Models\Warga;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -45,7 +46,7 @@ class Index extends Component
 
             // Jalankan impor secara langsung
             Excel::import($importer, $this->file);
-            
+
             // Ambil jumlah data yang berhasil diimpor
             $count = $importer->wargaBerhasilDiimpor;
 
@@ -55,7 +56,7 @@ class Index extends Component
                     'type' => 'success'
                 ]);
             } else {
-                 $this->dispatch('flash-message-display', [
+                $this->dispatch('flash-message-display', [
                     'message' => 'Impor selesai, namun tidak ada data warga baru yang dapat diproses. Pastikan format file benar.',
                     'type' => 'error'
                 ]);
@@ -63,7 +64,6 @@ class Index extends Component
 
             $this->closeImportModal();
             $this->dispatch('refresh-data');
-
         } catch (\Throwable $e) {
             Log::error('EXCEPTION SAAT IMPOR: ' . $e->getMessage());
             Log::error($e->getTraceAsString());
@@ -87,10 +87,10 @@ class Index extends Component
         $warga = Warga::with('kartuKeluarga')
             ->when($this->search, function ($query) {
                 $query->where('nama_lengkap', 'like', "%{$this->search}%")
-                      ->orWhere('nik', 'like', "%{$this->search}%")
-                      ->orWhereHas('kartuKeluarga', function ($subQuery) {
-                          $subQuery->where('nomor_kk', 'like', "%{$this->search}%");
-                      });
+                    ->orWhere('nik', 'like', "%{$this->search}%")
+                    ->orWhereHas('kartuKeluarga', function ($subQuery) {
+                        $subQuery->where('nomor_kk', 'like', "%{$this->search}%");
+                    });
             })
             ->latest()
             ->paginate($this->perPage);
@@ -100,4 +100,3 @@ class Index extends Component
         ]);
     }
 }
-

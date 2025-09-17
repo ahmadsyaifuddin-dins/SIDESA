@@ -11,7 +11,7 @@
         </div>
 
         <div class="flex items-center gap-x-2">
-            <button
+            <a href="{{ route('warga.create') }}" wire:navigate
                 class="flex items-center gap-x-2 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-main transition hover:bg-slate-50">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
                     <path fill-rule="evenodd"
@@ -19,7 +19,7 @@
                         clip-rule="evenodd" />
                 </svg>
                 Tambah Warga
-            </button>
+            </a>
             <button @click="$wire.set('showImportModal', true)"
                 class="bg-primary hover:bg-primary-dark flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
@@ -121,8 +121,10 @@
                         </td>
                         <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                             <div class="flex items-center justify-end gap-x-2">
-                                <a href="{{ route('warga.show', $item->id) }}" class="text-blue-600 hover:text-blue-900">Lihat</a>
-                                <a href="#" class="text-yellow-600 hover:text-yellow-900">Edit</a>
+                                <a href="{{ route('warga.show', $item->id) }}" wire:navigate
+                                    class="text-blue-600 hover:text-blue-900">Lihat</a>
+                                <a href="{{ route('warga.edit', $item) }}" wire:navigate
+                                    class="text-yellow-600 hover:text-yellow-900">Edit</a>
                             </div>
                         </td>
                     </tr>

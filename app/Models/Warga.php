@@ -48,7 +48,6 @@ class Warga extends Model
      * @var array
      */
     protected $casts = [
-        'tanggal_lahir' => 'date',
         'aktif' => 'boolean',
     ];
 

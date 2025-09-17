@@ -20,12 +20,23 @@
             <h1 class="text-2xl font-bold text-main md:text-3xl">{{ $warga->nama_lengkap }}</h1>
             <p class="text-light">Detail lengkap data kependudukan.</p>
         </div>
+        {{-- TOMBOL EDIT BARU --}}
+        <a href="{{ route('warga.edit', $warga) }}" wire:navigate
+            class="bg-primary hover:bg-primary-dark flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
+                <path
+                    d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
+                <path
+                    d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
+            </svg>
+            Edit Warga
+        </a>
     </div>
 
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {{-- Kolom Kiri: Data Pribadi & Keluarga --}}
         <div class="space-y-6 lg:col-span-2">
-            
+
             {{-- Kartu Data Pribadi --}}
             <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
                 <div class="border-b border-slate-200 bg-slate-50 px-6 py-4">
@@ -38,15 +49,17 @@
                     </div>
                     <div>
                         <p class="text-sm text-light">Tempat, Tanggal Lahir</p>
-                        <p class="font-medium text-main">{{ $warga->tempat_lahir }}, {{ \Carbon\Carbon::parse($warga->tanggal_lahir)->translatedFormat('d F Y') }}</p>
+                        <p class="font-medium text-main">{{ $warga->tempat_lahir }}, {{
+                            \Carbon\Carbon::parse($warga->tanggal_lahir)->translatedFormat('d F Y') }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-light">Jenis Kelamin</p>
                         <p class="font-medium text-main">{{ $warga->jenis_kelamin }}</p>
                     </div>
-                     <div>
+                    <div>
                         <p class="text-sm text-light">Usia</p>
-                        <p class="font-medium text-main">{{ \Carbon\Carbon::parse($warga->tanggal_lahir)->age }} Tahun</p>
+                        <p class="font-medium text-main">{{ \Carbon\Carbon::parse($warga->tanggal_lahir)->age }} Tahun
+                        </p>
                     </div>
                     <div>
                         <p class="text-sm text-light">Agama</p>
@@ -108,16 +121,17 @@
                     </div>
                     <div>
                         <p class="text-sm text-light">Kepala Keluarga</p>
-                        <p class="font-medium text-main">{{ $warga->kartuKeluarga->kepalaKeluarga->nama_lengkap ?? 'Belum Ditetapkan' }}</p>
+                        <p class="font-medium text-main">{{ $warga->kartuKeluarga->kepalaKeluarga->nama_lengkap ??
+                            'Belum Ditetapkan' }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-light">Alamat</p>
                         <p class="font-medium text-main">
-                            {{ $warga->kartuKeluarga->alamat ?? '' }}, 
+                            {{ $warga->kartuKeluarga->alamat ?? '' }},
                             RT {{ $warga->kartuKeluarga->rt ?? '' }} / RW {{ $warga->kartuKeluarga->rw ?? '' }}
                         </p>
                     </div>
-                     <div>
+                    <div>
                         <p class="text-sm text-light">Desa/Kelurahan</p>
                         <p class="font-medium text-main">{{ $warga->kartuKeluarga->desa_kelurahan ?? '-' }}</p>
                     </div>
@@ -128,7 +142,7 @@
                 </div>
             </div>
 
-             {{-- Kartu Histori Kependudukan --}}
+            {{-- Kartu Histori Kependudukan --}}
             <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
                 <div class="border-b border-slate-200 bg-slate-50 px-6 py-4">
                     <h3 class="text-base font-medium text-main">Histori Kependudukan</h3>
@@ -136,14 +150,15 @@
                 <div class="p-6">
                     <ul class="space-y-4">
                         @forelse($warga->histori->sortByDesc('tanggal_peristiwa') as $histori)
-                            <li class="relative pl-8">
-                                <div class="absolute left-0 top-1 h-3 w-3 rounded-full bg-blue-500"></div>
-                                <p class="font-semibold text-main">{{ $histori->peristiwa }}</p>
-                                <p class="text-sm text-light">{{ \Carbon\Carbon::parse($histori->tanggal_peristiwa)->translatedFormat('d M Y') }}</p>
-                                <p class="mt-1 text-sm text-slate-600">{{ $histori->detail_peristiwa }}</p>
-                            </li>
+                        <li class="relative pl-8">
+                            <div class="absolute left-0 top-1 h-3 w-3 rounded-full bg-blue-500"></div>
+                            <p class="font-semibold text-main">{{ $histori->peristiwa }}</p>
+                            <p class="text-sm text-light">{{
+                                \Carbon\Carbon::parse($histori->tanggal_peristiwa)->translatedFormat('d M Y') }}</p>
+                            <p class="mt-1 text-sm text-slate-600">{{ $histori->detail_peristiwa }}</p>
+                        </li>
                         @empty
-                            <p class="text-sm text-light">Belum ada histori kependudukan yang tercatat.</p>
+                        <p class="text-sm text-light">Belum ada histori kependudukan yang tercatat.</p>
                         @endforelse
                     </ul>
                 </div>
