@@ -28,6 +28,9 @@ class Index extends Component
 
     public array $opsiAgama = [];
 
+    public bool $showDeleteModal = false;
+    public ?Warga $wargaToDelete = null;
+
     protected $listeners = ['refresh-data' => '$refresh'];
 
     public function mount()
@@ -52,6 +55,35 @@ class Index extends Component
         $this->reset(['filterJenisKelamin', 'filterAgama', 'filterUsiaMin', 'filterUsiaMax', 'search']);
         $this->resetPage();
     }
+
+     // --- METODE BARU: Membuka Modal Konfirmasi Hapus ---
+     public function confirmDelete(Warga $warga)
+     {
+         $this->wargaToDelete = $warga;
+         $this->showDeleteModal = true;
+     }
+ 
+     // --- METODE BARU: Menutup Modal Konfirmasi Hapus ---
+     public function closeDeleteModal()
+     {
+         $this->showDeleteModal = false;
+         $this->wargaToDelete = null;
+     }
+ 
+     // --- METODE BARU: Mengeksekusi Penghapusan Data ---
+     public function deleteWarga()
+     {
+         if ($this->wargaToDelete) {
+             $nama = $this->wargaToDelete->nama_lengkap;
+             $this->wargaToDelete->delete();
+             $this->closeDeleteModal();
+             $this->dispatch('flash-message-display', [
+                 'message' => "Data warga '{$nama}' berhasil dihapus.",
+                 'type' => 'success'
+             ]);
+             $this->dispatch('refresh-data');
+         }
+     }
 
     public function import()
     {
