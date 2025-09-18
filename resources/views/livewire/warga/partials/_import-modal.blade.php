@@ -1,23 +1,21 @@
 {{-- Modal untuk Impor Data --}}
-<div x-show="$wire.showImportModal" x-transition.opacity x-cloak
+<div x-show="showImportModal" x-transition.opacity x-cloak
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-    <div @click.outside="$wire.closeImportModal()" class="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
+    <div @click.outside="showImportModal = false" class="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
         <div class="flex items-start justify-between">
             <div>
                 <h3 class="text-xl font-bold text-main">Import Data Warga</h3>
                 <p class="mt-1 text-sm text-light">Unggah file Excel untuk menambahkan data secara massal.</p>
             </div>
-            <button @click="$wire.closeImportModal()" class="text-slate-400 hover:text-slate-600">
+            <button @click="showImportModal = false" class="text-slate-400 hover:text-slate-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                     stroke="currentColor" class="h-6 w-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
-
         <form wire:submit.prevent="import" class="mt-6">
-            {{-- KOTAK INFORMASI BATASAN IMPOR --}}
-            <div class="mb-4 rounded-md border border-yellow-300 bg-yellow-50 p-3">
+             <div class="mb-4 rounded-md border border-yellow-300 bg-yellow-50 p-3">
                 <div class="flex">
                     <div class="flex-shrink-0">
                         <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -49,13 +47,11 @@
                 @error('file') <span class="mt-1 text-sm text-red-600">{{ $message }}</span> @enderror
                 <p class="mt-2 text-xs text-light">Format yang didukung: .xlsx, .xls. Ukuran maksimal: 5MB.</p>
             </div>
-
             <div wire:loading wire:target="file" class="mt-4">
                 <p class="text-sm text-light">Mengunggah file...</p>
             </div>
-
             <div class="mt-6 flex justify-end gap-x-3">
-                <button type="button" @click="$wire.closeImportModal()"
+                <button type="button" @click="showImportModal = false"
                     class="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-main transition hover:bg-slate-50">
                     Batal
                 </button>
@@ -69,3 +65,4 @@
         </form>
     </div>
 </div>
+

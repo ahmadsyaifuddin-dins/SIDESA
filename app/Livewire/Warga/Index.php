@@ -18,9 +18,7 @@ class Index extends Component
 
     public string $search = '';
     public int $perPage = 15;
-    public bool $showImportModal = false;
     public $file;
-    public bool $showFilters = false;
     public string $filterJenisKelamin = '';
     public string $filterAgama = '';
     public ?int $filterUsiaMin = null;
@@ -28,7 +26,7 @@ class Index extends Component
 
     public array $opsiAgama = [];
 
-    public bool $showDeleteModal = false;
+    // HANYA properti untuk data yang akan dihapus yang kita perlukan
     public ?Warga $wargaToDelete = null;
 
     protected $listeners = ['refresh-data' => '$refresh'];
@@ -45,45 +43,34 @@ class Index extends Component
         }
     }
 
-    public function toggleFilters()
-    {
-        $this->showFilters = !$this->showFilters;
-    }
-
     public function resetFilters()
     {
         $this->reset(['filterJenisKelamin', 'filterAgama', 'filterUsiaMin', 'filterUsiaMax', 'search']);
         $this->resetPage();
     }
 
-     // --- METODE BARU: Membuka Modal Konfirmasi Hapus ---
-     public function confirmDelete(Warga $warga)
-     {
-         $this->wargaToDelete = $warga;
-         $this->showDeleteModal = true;
-     }
- 
-     // --- METODE BARU: Menutup Modal Konfirmasi Hapus ---
-     public function closeDeleteModal()
-     {
-         $this->showDeleteModal = false;
-         $this->wargaToDelete = null;
-     }
- 
-     // --- METODE BARU: Mengeksekusi Penghapusan Data ---
-     public function deleteWarga()
-     {
-         if ($this->wargaToDelete) {
-             $nama = $this->wargaToDelete->nama_lengkap;
-             $this->wargaToDelete->delete();
-             $this->closeDeleteModal();
-             $this->dispatch('flash-message-display', [
-                 'message' => "Data warga '{$nama}' berhasil dihapus.",
-                 'type' => 'success'
-             ]);
-             $this->dispatch('refresh-data');
-         }
-     }
+    // Metode ini hanya menyiapkan data dan MENGIRIM EVENT ke Alpine.js
+    public function confirmDelete(Warga $warga)
+    {
+        $this->wargaToDelete = $warga;
+        $this->dispatch('open-delete-modal'); // Kirim sinyal ke frontend
+    }
+
+    // Metode ini menghapus data dan MENGIRIM EVENT ke Alpine.js
+    public function deleteWarga()
+    {
+        if ($this->wargaToDelete) {
+            $nama = $this->wargaToDelete->nama_lengkap;
+            $this->wargaToDelete->delete();
+            
+            $this->dispatch('flash-message-display', [
+                'message' => "Data warga '{$nama}' berhasil dihapus.",
+                'type' => 'success'
+            ]);
+            $this->dispatch('refresh-data');
+            $this->dispatch('close-delete-modal'); // Kirim sinyal ke frontend
+        }
+    }
 
     public function import()
     {
@@ -97,20 +84,14 @@ class Index extends Component
             } else {
                  $this->dispatch('flash-message-display', ['message' => 'Impor selesai, namun tidak ada data warga baru yang dapat diproses. Pastikan format file benar.', 'type' => 'error']);
             }
-            $this->closeImportModal();
             $this->dispatch('refresh-data');
+            $this->dispatch('close-import-modal'); // Kirim sinyal ke frontend
+
         } catch (\Throwable $e) {
             Log::error('EXCEPTION SAAT IMPOR: ' . $e->getMessage());
             Log::error($e->getTraceAsString());
             $this->dispatch('flash-message-display', ['message' => 'Terjadi kesalahan fatal saat mengimpor. Silakan cek log untuk detail.','type' => 'error']);
-            $this->closeImportModal();
         }
-    }
-
-    public function closeImportModal()
-    {
-        $this->showImportModal = false;
-        $this->file = null;
     }
 
     public function render()
@@ -122,7 +103,6 @@ class Index extends Component
             ->when($this->filterUsiaMin, fn($q) => $q->where('tanggal_lahir', '<=', Carbon::now()->subYears($this->filterUsiaMin)))
             ->when($this->filterUsiaMax, fn($q) => $q->where('tanggal_lahir', '>=', Carbon::now()->subYears($this->filterUsiaMax)));
         
-        // Hitung statistik sebagai variabel lokal
         $stats = [
             'total' => $wargaQuery->count(),
             'laki_laki' => (clone $wargaQuery)->where('jenis_kelamin', 'LAKI-LAKI')->count(),
@@ -135,14 +115,10 @@ class Index extends Component
             'perempuan' => $stats['perempuan'],
         ];
         
-        // Kirim event dengan data terbaru pada setiap render
         $this->dispatch('dashboard-updated', stats: $stats, chartData: $chartData);
         
         $warga = $wargaQuery->with('kartuKeluarga')->latest()->paginate($this->perPage);
 
-        // --- PERBAIKAN KRUSIAL ---
-        // Selalu teruskan data stats dan chartData ke view agar selalu tersedia
-        // baik saat pemuatan awal maupun setelah navigasi.
         return view('livewire.warga.index', [
             'warga' => $warga,
             'stats' => $stats,
@@ -150,4 +126,3 @@ class Index extends Component
         ]);
     }
 }
-

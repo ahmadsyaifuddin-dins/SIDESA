@@ -54,7 +54,7 @@
                                 class="text-blue-600 hover:text-blue-900">Lihat</a>
                             <a href="{{ route('warga.edit', $item) }}" wire:navigate
                                 class="text-yellow-600 hover:text-yellow-900">Edit</a>
-                            <button wire:click="confirmDelete({{ $item->id }})"
+                            <button @click="showDeleteModal = true" wire:click="confirmDelete({{ $item->id }})"
                                 class="text-red-600 hover:text-red-900">Hapus</button>
                         </div>
                     </td>

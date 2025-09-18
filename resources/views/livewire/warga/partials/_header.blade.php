@@ -15,7 +15,7 @@
             </svg>
             Tambah Warga
         </a>
-        <button @click="$wire.set('showImportModal', true)"
+        <button @click="showImportModal = true"
             class="bg-primary hover:bg-primary-dark flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
                 <path
