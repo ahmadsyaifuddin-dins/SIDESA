@@ -31,6 +31,7 @@ class WargaExportController extends Controller
             'filterUsiaMax',
             'filterPendidikan',
             'filterStatusPerkawinan',
+            'filterRt'
         ]);
 
         // Data opsi untuk mengubah kunci menjadi label yang bisa dibaca
@@ -94,6 +95,11 @@ class WargaExportController extends Controller
             ->when($request->input('filterUsiaMax'), fn($q, $max) => $q->where('tanggal_lahir', '>=', Carbon::now()->subYears($max)))
             ->when($request->input('filterPendidikan'), fn($q, $pendidikan) => $q->where('pendidikan_terakhir', $pendidikan))
             ->when($request->input('filterStatusPerkawinan'), fn($q, $status) => $q->where('status_perkawinan', $status))
+            ->when($request->input('filterRt'), function ($query, $rt) {
+                $query->whereHas('kartuKeluarga', function ($kkQuery) use ($rt) {
+                    $kkQuery->where('rt', $rt);
+                });
+            })
             ->with('kartuKeluarga'); // Eager load relasi untuk efisiensi
     }
 }

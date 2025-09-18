@@ -41,6 +41,7 @@
                 'filterUsiaMax' => $filterUsiaMax,
                 'filterPendidikan' => $filterPendidikan,
                 'filterStatusPerkawinan' => $filterStatusPerkawinan,
+                'filterRt' => $filterRt,
             ]);
         @endphp
 

@@ -42,6 +42,7 @@ JavaScript murni yang kita tulis di file index.blade.php.
                         <option value="usia">Kelompok Usia</option>
                         <option value="status_perkawinan">Status Perkawinan</option>
                         <option value="pendidikan">Pendidikan</option>
+                        <option value="rt">Berdasarkan RT</option>
                     </x-forms.select>
                 </div>
             </div>

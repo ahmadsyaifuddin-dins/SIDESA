@@ -78,12 +78,15 @@
                             @case('filterUsiaMax') Usia Max @break
                             @case('filterPendidikan') Pendidikan @break
                             @case('filterStatusPerkawinan') Status Perkawinan @break
+                            @case('filterRt') RT @break
                         @endswitch
                     </strong>: 
                      @if($key === 'filterPendidikan')
                         {{ $options['pendidikan'][$value] ?? $value }}
                      @elseif($key === 'filterStatusPerkawinan')
                         {{ $options['status_perkawinan'][$value] ?? $value }}
+                     @elseif($key === 'filterRt')
+                        {{ $value }}
                      @else
                         {{ $value }}
                      @endif

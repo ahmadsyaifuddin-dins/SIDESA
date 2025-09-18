@@ -12,6 +12,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Helpers\BreadcrumbHelper;
+use App\Models\KartuKeluarga;
 
 class Index extends Component
 {
@@ -25,17 +26,16 @@ class Index extends Component
     public $file;
     public string $filterJenisKelamin = '';
     public string $filterAgama = '';
+    public string $filterRt = '';
     public ?int $filterUsiaMin = null;
     public ?int $filterUsiaMax = null;
+    public $opsiRt = [];
 
     // --- PENAMBAHAN PROPERTI BARU ---
     public string $filterPendidikan = '';
     public string $filterStatusPerkawinan = '';
-
     public string $chartMode = 'jenis_kelamin'; // Mode default
-
     public array $opsiAgama = [];
-    // --- PENAMBAHAN PROPERTI BARU UNTUK OPSI ---
     public array $opsiPendidikan = [];
     public array $opsiStatusPerkawinan = [];
 
@@ -46,7 +46,7 @@ class Index extends Component
     public function mount()
     {
         $this->breadcrumbs = BreadcrumbHelper::warga('index');
-        
+
         // Dispatch breadcrumb ke navbar
         $this->dispatch('update-breadcrumbs', breadcrumbs: $this->breadcrumbs);
 
@@ -54,6 +54,14 @@ class Index extends Component
         $this->opsiAgama = config('options.agama', []);
         $this->opsiPendidikan = config('options.pendidikan', []);
         $this->opsiStatusPerkawinan = config('options.status_perkawinan', []);
+
+        // -- LOGIKA BARU: Ambil data RT unik dari database --
+        $this->opsiRt = KartuKeluarga::select('rt')
+            ->whereNotNull('rt')
+            ->where('rt', '!=', '')
+            ->distinct()
+            ->orderBy('rt')
+            ->pluck('rt');
     }
 
     public function updated($propertyName)
@@ -67,7 +75,8 @@ class Index extends Component
             'filterUsiaMin',
             'filterUsiaMax',
             'filterPendidikan',
-            'filterStatusPerkawinan'
+            'filterStatusPerkawinan',
+            'filterRt'
         ])) {
             $this->resetPage();
         }
@@ -83,7 +92,8 @@ class Index extends Component
             'filterUsiaMax',
             'search',
             'filterPendidikan',
-            'filterStatusPerkawinan'
+            'filterStatusPerkawinan',
+            'filterRt'
         ]);
         $this->resetPage();
     }
@@ -139,8 +149,12 @@ class Index extends Component
             ->when($this->filterUsiaMin, fn($q) => $q->where('tanggal_lahir', '<=', Carbon::now()->subYears($this->filterUsiaMin)))
             ->when($this->filterUsiaMax, fn($q) => $q->where('tanggal_lahir', '>=', Carbon::now()->subYears($this->filterUsiaMax)))
             ->when($this->filterPendidikan, fn($q) => $q->where('pendidikan_terakhir', $this->filterPendidikan))
-            ->when($this->filterStatusPerkawinan, fn($q) => $q->where('status_perkawinan', $this->filterStatusPerkawinan));
-
+            ->when($this->filterStatusPerkawinan, fn($q) => $q->where('status_perkawinan', $this->filterStatusPerkawinan))
+            ->when($this->filterRt, function ($query) {
+                $query->whereHas('kartuKeluarga', function ($kkQuery) {
+                    $kkQuery->where('rt', $this->filterRt);
+                });
+            });
         $stats = [
             'total' => $wargaQuery->count(),
             'laki_laki' => (clone $wargaQuery)->where('jenis_kelamin', 'LAKI-LAKI')->count(),
@@ -154,6 +168,7 @@ class Index extends Component
             'status_perkawinan' => $this->getChartDataByGroup((clone $wargaQuery), 'status_perkawinan', $this->opsiStatusPerkawinan),
             'pendidikan' => $this->getChartDataByGroup((clone $wargaQuery), 'pendidikan_terakhir', $this->opsiPendidikan),
             'usia' => $this->getChartDataUsia((clone $wargaQuery)),
+            'rt' => $this->getChartDataRt((clone $wargaQuery)),
         ];
 
         // Mengirim semua data grafik ke frontend
@@ -193,6 +208,26 @@ class Index extends Component
         ];
     }
 
+    /**
+     * Menghitung data chart untuk distribusi warga berdasarkan RT.
+     * @param \Illuminate\Database\Eloquent\Builder $wargaQuery
+     * @return \Illuminate\Support\Collection
+     */
+    private function getChartDataRt($wargaQuery)
+    {
+        $results = (clone $wargaQuery)
+            ->join('kartu_keluarga', 'warga.kartu_keluarga_id', '=', 'kartu_keluarga.id')
+            ->select('kartu_keluarga.rt', DB::raw('count(warga.id) as total'))
+            ->whereNotNull('kartu_keluarga.rt')->where('kartu_keluarga.rt', '!=', '')
+            ->groupBy('kartu_keluarga.rt')->orderBy('kartu_keluarga.rt')
+            ->get()->pluck('total', 'rt');
+
+        return [
+            'labels' => $results->keys()->map(fn($rt) => "RT {$rt}")->toArray(),
+            'data' => $results->values()->toArray(),
+        ];
+    }
+    
     private function getChartDataUsia($query)
     {
         $ageRanges = [
