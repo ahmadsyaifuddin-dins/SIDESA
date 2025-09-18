@@ -28,7 +28,7 @@ class User extends Authenticatable
         'role',
         'status',
         'last_login_at',
-        'no_hp', // Pastikan nama kolom ini sesuai dengan database Anda
+        'no_hp',
     ];
 
     /**

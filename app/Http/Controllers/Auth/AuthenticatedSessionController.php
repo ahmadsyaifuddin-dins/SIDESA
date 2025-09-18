@@ -46,7 +46,7 @@ class AuthenticatedSessionController extends Controller
             // MENCATAT WAKTU LOGIN: Update last_login_at ke waktu sekarang
             
             /** @var \App\Models\User $user */
-            $user->update(['last_login_at' => now()]);
+            // $user->update(['last_login_at' => now()]);
 
             $request->session()->regenerate();
 
