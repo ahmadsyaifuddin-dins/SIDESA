@@ -44,5 +44,9 @@
             <i class="fa-solid fa-file-pdf"></i>
             Export PDF
         </a>
+        <a href="{{ route('warga.export.excel', $filters) }}" target="_blank" class="bg-green-600 hover:bg-green-700 flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
+            <i class="fa-solid fa-file-excel"></i>
+            Export Excel
+        </a>
     </div>
 </div>

@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', \App\Livewire\Warga\Form::class)->name('create');
         
         Route::get('/export/pdf', [WargaExportController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('/export/excel', [WargaExportController::class, 'exportExcel'])->name('export.excel');
 
         Route::get('/{warga}', \App\Livewire\Warga\Show::class)->name('show');
 
