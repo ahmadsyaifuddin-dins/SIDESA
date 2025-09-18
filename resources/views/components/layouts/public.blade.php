@@ -16,7 +16,7 @@
     </main>
 
     {{-- Di sini kita bisa letakkan footer publik --}}
-    <footer class="bg-slate-800 text-white py-4">
+    <footer class="bg-slate-900 text-white py-4">
         <div class="max-w-7xl mx-auto px-4 text-center text-sm">
             &copy; 2025-{{ date('Y') }} SIDESA Anjir Muara Kota Tengah. All Rights Reserved.
         </div>

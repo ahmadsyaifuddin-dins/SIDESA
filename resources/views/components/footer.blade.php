@@ -1,4 +1,4 @@
-<footer class="w-full px-6 py-4 border-t border-slate-200 bg-surface">
+<footer class="w-full px-6 py-4 border-t bg-surface border-slate-200">
     <div class="flex items-center justify-between text-sm text-light">
         <div>
             &copy; 2025-{{ date('Y') }} SIDESA Anjir Muara. All Rights Reserved.
