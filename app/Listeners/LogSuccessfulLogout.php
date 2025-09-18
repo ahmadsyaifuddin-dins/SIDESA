@@ -21,12 +21,11 @@ class LogSuccessfulLogout
      */
     public function handle(Logout $event): void
     {
+        $user = $event->user;
         // Pastikan ada user yang logout untuk dicatat
-        if ($event->user) {
-            activity()
-               ->performedOn($event->user)
-               ->causedBy($event->user)
-               ->log('User Logout nih!');
-        }
+        activity()
+            ->performedOn($user)
+            ->causedBy($user)
+            ->log('User Logout nih!');
     }
 }

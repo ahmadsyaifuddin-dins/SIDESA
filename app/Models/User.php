@@ -86,6 +86,7 @@ class User extends Authenticatable
                     'role' => 'Role',
                     'status' => 'Status',
                     'password' => 'Password',
+                    'last_login_at' => 'Waktu Login Terakhir',
                     default => ucwords(str_replace('_', ' ', $field)),
                 };
             };
@@ -125,9 +126,11 @@ class User extends Authenticatable
                 'role',
                 'status',
                 'password',
+                'last_login_at',
             ])
             ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->dontLogIfAttributesChangedOnly(['remember_token'])
             ->useLogName('user');
     }
 }
-

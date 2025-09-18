@@ -25,7 +25,7 @@ class LogSuccessfulLogin
         $user = $event->user;
 
         // 1. Matikan logging otomatis HANYA untuk instance user ini, sesaat
-        $user->disableLogging();
+        // $user->disableLogging();
 
         // 2. Lakukan update waktu login terakhir. 
         //    Karena logging dimatikan, aksi ini TIDAK akan membuat log otomatis.
@@ -35,7 +35,7 @@ class LogSuccessfulLogin
         activity()
            ->performedOn($user)
            ->causedBy($user)
-           ->log('User Logged In');
+           ->log('User Login nih!');
     }
 }
 
