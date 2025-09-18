@@ -30,7 +30,7 @@
                     <img src="{{ asset(Auth::user()->profile_photo_path) }}"
                         alt="{{ Auth::user()->name }}" class="w-full h-full object-cover rounded-full">
                     @else
-                    <div class="w-full h-full rounded-full bg-primary text-white flex items-center justify-center font-bold">
+                    <div class="w-full h-full rounded-full bg-primary-gradient text-white flex items-center justify-center font-bold">
                         {{ substr(auth()->user()->name, 0, 1) }}
                     </div>
                     @endif

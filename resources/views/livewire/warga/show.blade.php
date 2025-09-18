@@ -22,7 +22,7 @@
         </div>
         {{-- TOMBOL EDIT BARU --}}
         <a href="{{ route('warga.edit', $warga) }}" wire:navigate
-            class="bg-primary hover:bg-primary-dark flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
+            class="bg-primary-gradient hover:bg-primary-gradient-dark flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
                 <path
                     d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />

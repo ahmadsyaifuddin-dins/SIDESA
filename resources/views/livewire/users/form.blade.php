@@ -103,7 +103,7 @@
                     Batal
                 </a>
                 <button type="submit" wire:loading.attr="disabled"
-                    class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
+                    class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
                     <span wire:loading.remove>Simpan</span>
                     <span wire:loading>Menyimpan...</span>
                 </button>

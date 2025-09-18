@@ -152,7 +152,7 @@
         {{-- Tombol Aksi dengan Indikator Loading --}}
         <div class="flex justify-end">
             <button type="submit"
-                class="bg-primary hover:bg-primary-dark flex items-center gap-x-2 rounded-md px-6 py-2.5 text-sm font-medium text-white transition">
+                class="bg-primary-gradient hover:bg-primary-gradient-dark flex items-center gap-x-2 rounded-md px-6 py-2.5 text-sm font-medium text-white transition">
                 <svg wire:loading wire:target="save" class="h-5 w-5 animate-spin" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

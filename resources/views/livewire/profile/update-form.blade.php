@@ -25,7 +25,7 @@
                     <!-- Tombol Upload -->
                     <div class="mt-4">
                         <input type="file" wire:model="photo" class="hidden" x-ref="photo">
-                        <button type="button" @click="$refs.photo.click()" class="text-sm bg-slate-200 hover:bg-slate-300 text-main font-semibold py-2 px-4 rounded-md transition-colors">
+                        <button type="button" @click="$refs.photo.click()" class="text-sm bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
                             Unggah Foto
                         </button>
                     </div>
@@ -76,7 +76,7 @@
                 </div>
             </div>
             <div class="mt-6 flex justify-end">
-                <button type="submit" wire:loading.attr="disabled" class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
+                <button type="submit" wire:loading.attr="disabled" class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
                     Simpan Perubahan
                 </button>
             </div>
@@ -107,7 +107,7 @@
                 </div>
             </div>
             <div class="mt-6 flex justify-end">
-                <button type="submit" wire:loading.attr="disabled" class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
+                <button type="submit" wire:loading.attr="disabled" class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
                     Ubah Password
                 </button>
             </div>

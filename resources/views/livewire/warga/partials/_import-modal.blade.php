@@ -56,7 +56,7 @@
                     Batal
                 </button>
                 <button type="submit"
-                    class="bg-primary hover:bg-primary-dark rounded-md px-4 py-2 text-sm font-medium text-white transition"
+                    class="bg-primary-gradient hover:bg-primary-gradient-dark rounded-md px-4 py-2 text-sm font-medium text-white transition"
                     wire:loading.attr="disabled" wire:target="import, file">
                     <span wire:loading.remove wire:target="import">Mulai Proses Impor</span>
                     <span wire:loading wire:target="import">Memproses data...</span>

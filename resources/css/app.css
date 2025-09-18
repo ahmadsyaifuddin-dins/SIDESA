@@ -1,21 +1,20 @@
 /* 1. Import Font dari Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
+/* 2. Import Font Awesome */
 @import '@fortawesome/fontawesome-free/css/all.css';
 
-/* 2. Import Entry Point Tailwind CSS */
+/* 3. Import Entry Point Tailwind CSS */
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
 |--------------------------------------------------------------------------
-| 3. Definisikan Design System Menggunakan CSS Variables
+| 4. Definisikan Design System Menggunakan CSS Variables
 |--------------------------------------------------------------------------
-|
 | Di sinilah kita mendefinisikan semua warna dan font default kita.
-| Ini adalah "Single Source of Truth" kita dalam mode config-less.
-|
+| Kita pisahkan warna solid dan gradient untuk keperluan berbeda.
 */
 @layer base {
     html, body {
@@ -24,25 +23,26 @@
     }
 
     :root {
-        /* Warna Primer */
-        --color-primary: #2563eb;       /* blue-600 */
-        --color-primary-dark: #1d4ed8;  /* blue-700 */
+        /* Primary (gradient + solid fallback) */
+        --color-primary: #0ea5e9;        /* sky-500 (fallback solid) */
+        --color-primary-dark: #10b981;   /* emerald-500 */
+        --gradient-primary: linear-gradient(90deg, #8711c1 0%, #2472fc 100%);
 
-        /* Warna Sekunder */
-        --color-secondary: #0ea5e9;     /* sky-500 */
-        --color-secondary-dark: #0284c7;/* sky-600 */
+        /* Secondary */
+        --color-secondary: #3b82f6;      /* blue-500 */
+        --color-secondary-dark: #2563eb; /* blue-600 */
 
-        /* Warna Netral & Teks */
-        --color-background: #f1f5f9;    /* slate-100 */
-        --color-surface: #ffffff;       /* white */
-        --color-text-main: #1e293b;     /* slate-800 */
-        --color-text-light: #64748b;    /* slate-500 */
+        /* Netral & Teks */
+        --color-background: #f1f5f9;     /* slate-100 */
+        --color-surface: #ffffff;        /* white */
+        --color-text-main: #1e293b;      /* slate-800 */
+        --color-text-light: #64748b;     /* slate-500 */
 
-        /* Warna Notifikasi */
-        --color-success: #22c55e;       /* green-500 */
-        --color-warning: #f59e0b;       /* amber-500 */
-        --color-danger: #dc2626;        /* red-600 */
-        --color-danger-dark: #b91c1c;   /* red-700 */
+        /* Notifikasi */
+        --color-success: #22c55e;        /* green-500 */
+        --color-warning: #f59e0b;        /* amber-500 */
+        --color-danger: #dc2626;         /* red-600 */
+        --color-danger-dark: #b91c1c;    /* red-700 */
 
         /* Tipografi */
         --font-sans: 'Plus Jakarta Sans', sans-serif;
@@ -51,11 +51,8 @@
 
 /*
 |--------------------------------------------------------------------------
-| 4. Terapkan Style Dasar ke Elemen HTML
+| 5. Terapkan Style Dasar ke Elemen HTML
 |--------------------------------------------------------------------------
-|
-| Kita menggunakan variable yang sudah didefinisikan di atas.
-|
 */
 @layer base {
     body {
@@ -73,60 +70,52 @@
             color: var(--color-primary-dark);
         }
     }
-    
+
     h1, h2, h3, h4, h5, h6 {
         @apply font-bold;
     }
 }
 
-
 /*
 |--------------------------------------------------------------------------
-| 5. Definisikan Komponen / Utility Class Kustom
+| 6. Definisikan Komponen / Utility Class Kustom
 |--------------------------------------------------------------------------
-|
-| Kita membuat kelas sederhana untuk "membungkus" variabel CSS kita,
-| agar mudah digunakan di HTML dan dikenali oleh extension VS Code.
-|
 */
 @layer components {
-    .bg-background {
-        @apply bg-[var(--color-background)];
-    }
-    .bg-surface {
-        @apply bg-[var(--color-surface)];
-    }
-    .bg-primary {
-        @apply bg-[var(--color-primary)];
-    }
-    .hover\:bg-primary-dark:hover {
-        @apply bg-[var(--color-primary-dark)];
-    }
-    .text-primary {
-        @apply text-[var(--color-primary)];
-    }
-    .hover\:text-primary-dark:hover {
-        @apply text-[var(--color-primary-dark)];
-    }
-    .border-primary {
-        @apply border-[var(--color-primary)];
-    }
-    .ring-primary {
-        @apply ring-[var(--color-primary)];
+    /* Background & Text Solid */
+    .bg-background { @apply bg-[var(--color-background)]; }
+    .bg-surface { @apply bg-[var(--color-surface)]; }
+    .bg-primary-solid { @apply bg-[var(--color-primary)]; }
+    .text-primary { @apply text-[var(--color-primary)]; }
+    .text-light { @apply text-[var(--color-text-light)]; }
+    .text-main { @apply text-[var(--color-text-main)]; }
+    .border-primary { @apply border-[var(--color-primary)]; }
+    .ring-primary { @apply ring-[var(--color-primary)]; }
+
+    .text-gradient { @apply text-[var(--gradient-primary)];}
+
+    /* Gradient khusus */
+    .bg-primary-gradient {
+        background-image: var(--gradient-primary);
     }
 
-    .text-light {
-        @apply text-[var(--color-text-light)];
+    /* Tombol gradient */
+    .btn-primary {
+        @apply text-white px-4 py-2 rounded-md shadow-md transition;
+        background-image: var(--gradient-primary);
     }
-    .text-main {
-        @apply text-[var(--color-text-main)];
+    .btn-primary:hover {
+        filter: brightness(1.1);
     }
-   
+
+    /* Hover states */
+    .hover\:bg-primary-dark:hover { @apply bg-[var(--color-primary-dark)]; }
+    .hover\:text-primary-dark:hover { @apply text-[var(--color-primary-dark)]; }
 }
 
 /*
 |--------------------------------------------------------------------------
-| 6. Aturan Spesifik & Perbaikan Bug
+| 7. Aturan Spesifik & Perbaikan Bug
 |--------------------------------------------------------------------------
 */
 .guest-layout {

@@ -25,7 +25,7 @@
             <li>
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors
                           {{ request()->routeIs('dashboard') 
-                             ? 'bg-primary text-white' 
+                             ? 'bg-primary-gradient text-white' 
                              : 'text-main hover:bg-slate-200' }}">
                     {{-- Icon Dashboard (Heroicons) --}}
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -39,7 +39,7 @@
             @if (in_array(auth()->user()->role, ['superadmin', 'pimpinan']))
             <li>
                 <a href="{{ route('users.index') }}" wire:navigate class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors
-                  {{ request()->routeIs('users.index') ? 'bg-primary text-white' : 'text-main hover:bg-slate-200' }}">
+                  {{ request()->routeIs('users.index') ? 'bg-primary-gradient text-white' : 'text-main hover:bg-slate-200' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"
                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0012 11z"
@@ -53,7 +53,7 @@
             {{-- Item Menu Data Warga --}}
             <li>
                 <a href="{{ route('warga.index') }}" wire:navigate class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors
-                  {{ request()->routeIs('warga.index') ? 'bg-primary text-white' : 'text-main hover:bg-slate-200' }}">
+                  {{ request()->routeIs('warga.index') ? 'bg-primary-gradient text-white' : 'text-main hover:bg-slate-200' }}">
                     {{-- Icon Data Warga (Heroicons) --}}
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path
@@ -95,7 +95,7 @@
             @if (auth()->user()->role === 'superadmin')
             <li>
                 <a href="{{ route('activity-log.index') }}" wire:navigate class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors
-                  {{ request()->routeIs('activity-log.index') ? 'bg-primary text-white' : 'text-main hover:bg-slate-200' }}">
+                  {{ request()->routeIs('activity-log.index') ? 'bg-primary-gradient text-white' : 'text-main hover:bg-slate-200' }}">
                     {{-- Icon Log (Heroicons: Document Report) --}}
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v2a1 1 0 102 0v-2zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd" />

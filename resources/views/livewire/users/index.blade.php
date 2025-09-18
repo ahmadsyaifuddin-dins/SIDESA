@@ -6,7 +6,7 @@
         @if(auth()->user()->role === 'superadmin')
             <a href="{{ route('users.create') }}" 
                wire:navigate
-                 class="bg-primary hover:bg-primary-dark text-white font-semibold 
+                 class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold 
                   py-2 px-2 sm:px-4 
                   rounded-md transition-colors">
                 Tambah Pengguna
@@ -66,7 +66,7 @@
                                         @if ($user->profile_photo_path)
                                             <img src="{{ asset($user->profile_photo_path) }}" alt="{{ $user->name }}" class="w-10 h-10 rounded-full object-cover">
                                         @else
-                                            <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+                                            <div class="w-10 h-10 rounded-full bg-primary-gradient text-white flex items-center justify-center font-bold">
                                                 {{ substr($user->name, 0, 1) }}
                                             </div>
                                         @endif

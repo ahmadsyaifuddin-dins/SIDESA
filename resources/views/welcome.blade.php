@@ -9,12 +9,12 @@
                 <div>
                     @auth
                     <a href="{{ route('dashboard') }}"
-                        class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
+                        class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
                         Dashboard
                     </a>
                     @else
                     <a href="{{ route('login') }}"
-                        class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
+                        class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
                         Login Administrator
                     </a>
                     @endauth
@@ -46,7 +46,7 @@
             <div class="mt-12 grid gap-10 md:grid-cols-3">
 
                 <div class="text-center p-6 border border-slate-200 rounded-lg">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white mx-auto">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-gradient text-white mx-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="text-center p-6 border border-slate-200 rounded-lg">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white mx-auto">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-gradient text-white mx-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="text-center p-6 border border-slate-200 rounded-lg">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white mx-auto">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-gradient text-white mx-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
