@@ -6,6 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Activitylog\Models\Activity;
+use App\Helpers\BreadcrumbHelper;
 
 class Index extends Component
 {
@@ -23,16 +24,25 @@ class Index extends Component
     public $users = [];
     public $logNames = [];
 
+    public $breadcrumbs = [];
+
     /**
      * Inisialisasi komponen, memuat data untuk filter.
      */
     public function mount()
     {
+        // Set breadcrumb untuk halaman index activityLog
+        $this->breadcrumbs = BreadcrumbHelper::activityLog('index');
+        
+        // Dispatch breadcrumb ke navbar
+        
         // Ambil semua user untuk filter "Pelaku"
         $this->users = User::orderBy('name')->pluck('name', 'id');
         
         // Ambil semua nama log unik (modul) dari tabel log
         $this->logNames = Activity::distinct()->pluck('log_name');
+
+        $this->dispatch('update-breadcrumbs', breadcrumbs: $this->breadcrumbs);
     }
     
     /**

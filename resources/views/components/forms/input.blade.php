@@ -12,7 +12,7 @@
     
     {{-- Input dengan class yang digabungkan --}}
     <input {{ $attributes->merge([
-        'class' => 'block w-full border-slate-300 rounded-md shadow-sm focus:border-primary focus:ring-primary' . ($leadingIcon ? ' ps-10 p-2.5' : ' p-2.5')
+        'class' => 'block w-full border-slate-300 rounded-full shadow-sm focus:border-primary focus:ring-primary bg-surface' . ($leadingIcon ? ' ps-10 p-2.5' : ' p-2.5')
     ]) }}>
 </div>
 

@@ -8,11 +8,13 @@ use App\Models\Warga;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use App\Helpers\BreadcrumbHelper;
 
 class Form extends Component
 {
     public Warga $warga;
     public $kartuKeluarga = [];
+    public $breadcrumbs = [];
 
     // Properti untuk menampung opsi dari config (hanya yang datanya banyak)
     public $opsiAgama = [];
@@ -50,8 +52,8 @@ class Form extends Component
         if ($this->warga->exists) {
             // Jika edit data, isi semua properti dari model
             $this->fill($this->warga->toArray());
+            $this->breadcrumbs = BreadcrumbHelper::warga('edit', $this->warga);
         } else {
-            // -- PERBAIKAN BUG ADA DI SINI --
             // Jika tambah data baru, inisialisasi nilai default untuk dropdown
             // Ambil key pertama dari setiap array opsi sebagai nilai default
             $this->agama = array_key_first($this->opsiAgama);
@@ -60,7 +62,12 @@ class Form extends Component
             $this->golongan_darah = array_key_first($this->opsiGolonganDarah);
             // Untuk dropdown statis, kita bisa set manual
             $this->status_perkawinan = 'BELUM KAWIN';
+            $this->warga = new Warga();
+            $this->breadcrumbs = BreadcrumbHelper::warga('create');
         }
+
+        // Dispatch breadcrumb ke navbar
+        $this->dispatch('update-breadcrumbs', breadcrumbs: $this->breadcrumbs);
     }
 
     public function save()

@@ -2,17 +2,29 @@
 
 namespace App\Livewire\Ui;
 
+use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\Attributes\On; 
 
 class Navbar extends Component
 {
-    // 2. Buat method kosong yang "mendengarkan" event 'profile-updated'
-    //    Saat event ini diterima, Livewire akan otomatis me-render ulang komponen ini.
+    public $breadcrumbs = [];
+
+    public function mount($breadcrumbs = [])
+    {
+        $this->breadcrumbs = $breadcrumbs;
+    }
+
+    #[On('update-breadcrumbs')]
+    public function updateBreadcrumbs($breadcrumbs)
+    {
+        $this->breadcrumbs = $breadcrumbs;
+    }
+
     #[On('profile-updated')]
     public function refresh()
     {
-        // Method ini bisa dibiarkan kosong.
+        // Method untuk me-refresh info user
+        $this->dispatch('$refresh');
     }
 
     public function render()

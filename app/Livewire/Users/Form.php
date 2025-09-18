@@ -8,11 +8,13 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
+use App\Helpers\BreadcrumbHelper;
 
 #[Layout('components.layouts.app')]
 class Form extends Component
 {
     public User $user;
+    public $breadcrumbs = [];
 
     #[Rule('required|string|max:255')]
     public $name = '';
@@ -46,7 +48,17 @@ class Form extends Component
             $this->role = $user->role;
             $this->status = $user->status;
             $this->isEditMode = true;
+            // Set breadcrumb untuk edit mode
+            $this->breadcrumbs = BreadcrumbHelper::users('edit', $user);
+        } else {
+            $this->user = new User();
+
+            // Set breadcrumb untuk create mode
+            $this->breadcrumbs = BreadcrumbHelper::users('create');
         }
+
+        // Dispatch breadcrumb ke navbar
+        $this->dispatch('update-breadcrumbs', breadcrumbs: $this->breadcrumbs);
     }
 
     public function save()

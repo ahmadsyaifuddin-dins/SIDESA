@@ -11,11 +11,14 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Helpers\BreadcrumbHelper;
 
 class Index extends Component
 {
     use WithPagination;
     use WithFileUploads;
+
+    public $breadcrumbs = [];
 
     public string $search = '';
     public int $perPage = 15;
@@ -42,6 +45,11 @@ class Index extends Component
 
     public function mount()
     {
+        $this->breadcrumbs = BreadcrumbHelper::warga('index');
+        
+        // Dispatch breadcrumb ke navbar
+        $this->dispatch('update-breadcrumbs', breadcrumbs: $this->breadcrumbs);
+
         // Memuat semua opsi dari file config/options.php
         $this->opsiAgama = config('options.agama', []);
         $this->opsiPendidikan = config('options.pendidikan', []);

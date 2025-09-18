@@ -1,7 +1,7 @@
 {{-- Baris Kontrol: Pencarian dan Tombol Filter --}}
 <div class="mb-4 flex flex-col items-center justify-between gap-4 md:flex-row">
     {{-- Input Pencarian --}}
-    <div class="w-full md:w-1/3">
+    <div class="w-full md:w-1/3 bg-surface rounded-full">
         <x-forms.input wire:model.live.debounce.300ms="search" placeholder="Cari deskripsi atau pelaku..." />
     </div>
 
