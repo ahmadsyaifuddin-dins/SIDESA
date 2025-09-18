@@ -19,7 +19,7 @@ class Form extends Component
     public $opsiGolonganDarah = [];
     public $opsiHubunganKeluarga = [];
     public $opsiPendidikan = [];
-    
+
     // Properti untuk data warga
     public $kartu_keluarga_id;
     public $nik;
@@ -41,14 +41,25 @@ class Form extends Component
         $this->warga = $warga->exists ? $warga : new Warga();
         $this->kartuKeluarga = KartuKeluarga::pluck('nomor_kk', 'id')->all();
 
-        // Muat opsi yang datanya banyak dari file config/options.php
+        // Muat opsi dari file config
         $this->opsiAgama = config('options.agama', []);
         $this->opsiGolonganDarah = config('options.golongan_darah', []);
         $this->opsiHubunganKeluarga = config('options.hubungan_keluarga', []);
         $this->opsiPendidikan = config('options.pendidikan', []);
 
         if ($this->warga->exists) {
+            // Jika edit data, isi semua properti dari model
             $this->fill($this->warga->toArray());
+        } else {
+            // -- PERBAIKAN BUG ADA DI SINI --
+            // Jika tambah data baru, inisialisasi nilai default untuk dropdown
+            // Ambil key pertama dari setiap array opsi sebagai nilai default
+            $this->agama = array_key_first($this->opsiAgama);
+            $this->status_hubungan_keluarga = array_key_first($this->opsiHubunganKeluarga);
+            $this->pendidikan_terakhir = array_key_first($this->opsiPendidikan);
+            $this->golongan_darah = array_key_first($this->opsiGolonganDarah);
+            // Untuk dropdown statis, kita bisa set manual
+            $this->status_perkawinan = 'BELUM KAWIN';
         }
     }
 
@@ -72,12 +83,12 @@ class Form extends Component
             'nama_ayah' => 'nullable|string|max:255',
             'nama_ibu' => 'nullable|string|max:255',
         ]);
-        
+
         $isNew = !$this->warga->exists;
 
         if ($isNew) {
             $this->warga = Warga::create($validatedData);
-            
+
             HistoryKependudukan::create([
                 'warga_id' => $this->warga->id,
                 'peristiwa' => 'LAHIR',
@@ -100,4 +111,3 @@ class Form extends Component
         return view('livewire.warga.form');
     }
 }
-

@@ -17,6 +17,12 @@
         <h1 class="text-2xl font-bold text-main md:text-3xl">{{ $warga->exists ? 'Edit Data Warga' : 'Tambah Warga Baru'
             }}</h1>
         <p class="text-light">Lengkapi semua informasi yang diperlukan pada form di bawah ini.</p>
+
+        @if ($errors->any())
+        <div class="mb-4 text-sm bg-red-100 text-red-700 p-3 rounded-md">
+            {{ $errors->first() }}
+        </div>
+        @endif
     </div>
 
     {{-- Form Utama dengan struktur kartu --}}
@@ -31,7 +37,7 @@
             <div class="grid grid-cols-1 gap-6 p-5 md:grid-cols-2">
                 <div class="md:col-span-2">
                     <label for="kartu_keluarga_id" class="block text-sm font-medium text-main">Nomor Kartu
-                        Keluarga</label>
+                        Keluarga <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.select id="kartu_keluarga_id" wire:model="kartu_keluarga_id" class="mt-1" required>
                         <option value="">Pilih Nomor KK</option>
                         @foreach($kartuKeluarga as $id => $nomor_kk)
@@ -40,7 +46,8 @@
                     </x-forms.select>
                 </div>
                 <div>
-                    <label for="status_hubungan_keluarga" class="block text-sm font-medium text-main">Status Hubungan Keluarga</label>
+                    <label for="status_hubungan_keluarga" class="block text-sm font-medium text-main">Status Hubungan
+                        Keluarga <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.select id="status_hubungan_keluarga" wire:model="status_hubungan_keluarga" class="mt-1"
                         required>
                         @foreach($opsiHubunganKeluarga as $key => $value)
@@ -49,7 +56,7 @@
                     </x-forms.select>
                 </div>
                 <div>
-                    <label for="status_perkawinan" class="block text-sm font-medium text-main">Status Perkawinan</label>
+                    <label for="status_perkawinan" class="block text-sm font-medium text-main">Status Perkawinan <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.select id="status_perkawinan" wire:model="status_perkawinan" class="mt-1" required>
                         <option value="">Pilih Status Perkawinan</option>
                         <option value="BELUM KAWIN">BELUM KAWIN</option>
@@ -78,17 +85,17 @@
             </div>
             <div class="grid grid-cols-1 gap-6 p-5 md:grid-cols-2">
                 <div>
-                    <label for="nik" class="block text-sm font-medium text-main">NIK (Nomor Induk Kependudukan)</label>
+                    <label for="nik" class="block text-sm font-medium text-main">NIK (Nomor Induk Kependudukan) <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.input id="nik" wire:model="nik" class="mt-1" placeholder="Masukkan 16 digit NIK"
                         required />
                 </div>
                 <div>
-                    <label for="nama_lengkap" class="block text-sm font-medium text-main">Nama Lengkap</label>
+                    <label for="nama_lengkap" class="block text-sm font-medium text-main">Nama Lengkap <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.input id="nama_lengkap" wire:model="nama_lengkap" class="mt-1"
                         placeholder="Sesuai dengan KTP" required />
                 </div>
                 <div>
-                    <label for="jenis_kelamin" class="block text-sm font-medium text-main">Jenis Kelamin</label>
+                    <label for="jenis_kelamin" class="block text-sm font-medium text-main">Jenis Kelamin <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.select id="jenis_kelamin" wire:model="jenis_kelamin" class="mt-1" required>
                         <option value="">Pilih Jenis Kelamin</option>
                         <option value="LAKI-LAKI">LAKI-LAKI</option>
@@ -96,7 +103,7 @@
                     </x-forms.select>
                 </div>
                 <div>
-                    <label for="agama" class="block text-sm font-medium text-main">Agama</label>
+                    <label for="agama" class="block text-sm font-medium text-main">Agama <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.select id="agama" wire:model="agama" class="mt-1" required>
                         @foreach($opsiAgama as $key => $value)
                         <option value="{{ $key }}">{{ $value }}</option>
@@ -104,12 +111,12 @@
                     </x-forms.select>
                 </div>
                 <div>
-                    <label for="tempat_lahir" class="block text-sm font-medium text-main">Tempat Lahir</label>
+                    <label for="tempat_lahir" class="block text-sm font-medium text-main">Tempat Lahir <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.input id="tempat_lahir" wire:model="tempat_lahir" class="mt-1"
                         placeholder="Contoh: Banjarmasin" required />
                 </div>
                 <div>
-                    <label for="tanggal_lahir" class="block text-sm font-medium text-main">Tanggal Lahir</label>
+                    <label for="tanggal_lahir" class="block text-sm font-medium text-main">Tanggal Lahir <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.input id="tanggal_lahir" type="date" wire:model="tanggal_lahir" class="mt-1" required />
                 </div>
                 <div class="md:col-span-2">
@@ -134,7 +141,7 @@
             <div class="grid grid-cols-1 gap-6 p-5 md:grid-cols-2">
                 <div>
                     <label for="pendidikan_terakhir" class="block text-sm font-medium text-main">Pendidikan
-                        Terakhir</label>
+                        Terakhir <span class="text-red-500 text-bold text-lg">*</span></label>
                     <x-forms.select id="pendidikan_terakhir" wire:model="pendidikan_terakhir" class="mt-1">
                         @foreach($opsiPendidikan as $key => $value)
                         <option value="{{ $key }}">{{ $value }}</option>
