@@ -1,80 +1,117 @@
-{{-- 1. Tambahkan x-data untuk mengelola semua status UI di frontend --}}
 <div x-data="{ 
     title: 'Manajemen Data Warga',
     showImportModal: false,
     showDeleteModal: false,
     showFilters: false
 }"
-{{-- 2. Tambahkan listener untuk event dari backend --}}
 @open-delete-modal.window="showDeleteModal = true"
 @close-delete-modal.window="showDeleteModal = false"
 @close-import-modal.window="showImportModal = false"
 >
-<x-slot:title>
-    Manajemen Data Warga
-</x-slot:title>
+    <x-slot:title>
+        Manajemen Data Warga
+    </x-slot:title>
 
-@include('livewire.warga.partials._header')
-@include('livewire.warga.partials._dashboard')
-@include('livewire.warga.partials._controls')
-@include('livewire.warga.partials._table')
-@include('livewire.warga.partials._pagination')
-
-{{-- Panggil Modal dari file parsialnya masing-masing --}}
-@include('livewire.warga.partials._import-modal')
-@include('livewire.warga.partials._delete-modal')
+    @include('livewire.warga.partials._header')
+    @include('livewire.warga.partials._dashboard')
+    @include('livewire.warga.partials._controls')
+    @include('livewire.warga.partials._table')
+    @include('livewire.warga.partials._pagination')
+    @include('livewire.warga.partials._import-modal')
+    @include('livewire.warga.partials._delete-modal')
 
 </div>
 
 @push('scripts')
-{{-- script vanilla js Anda tetap sama dan aman --}}
+{{-- PEROMBAKAN TOTAL SCRIPT GRAFIK --}}
 <script>
 document.addEventListener('livewire:navigated', () => {
-const initialStats = @json($stats);
-const initialChartData = @json($chartData);
-let wargaChart = null;
-const statTotalEl = document.getElementById('stat-total');
-const statLakiLakiEl = document.getElementById('stat-laki-laki');
-const statPerempuanEl = document.getElementById('stat-perempuan');
-const statTotalKkEl = document.getElementById('stat-total-kk');
-const chartCanvas = document.getElementById('wargaChart');
-if (!chartCanvas) return;
-function updateDashboard(stats, chartData) {
-    if (!stats || !chartData) return;
-    statTotalEl.innerText = stats.total;
-    statLakiLakiEl.innerText = stats.laki_laki;
-    statPerempuanEl.innerText = stats.perempuan;
-    statTotalKkEl.innerText = stats.total_kk;
-    if (wargaChart) {
-        wargaChart.data.datasets[0].data = [chartData.laki_laki, chartData.perempuan];
-        wargaChart.update();
-    } else {
-        wargaChart = new Chart(chartCanvas.getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['Laki-laki', 'Perempuan'],
-                datasets: [{
-                    label: 'Jumlah Penduduk',
-                    data: [chartData.laki_laki, chartData.perempuan],
-                    backgroundColor: ['rgba(59, 130, 246, 0.6)', 'rgba(236, 72, 153, 0.6)'],
-                    borderColor: ['rgba(59, 130, 246, 1)', 'rgba(236, 72, 153, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
-                plugins: { legend: { display: false } }
-            }
-        });
+    // Mengambil semua data yang dibutuhkan saat halaman dimuat
+    const initialStats = @json($stats);
+    const allInitialChartData = @json($allChartData);
+    const initialChartMode = @json($chartMode);
+
+    let wargaChart = null; // Variabel global untuk instance Chart.js
+    const chartCanvas = document.getElementById('wargaChart');
+    if (!chartCanvas) return;
+
+    // Elemen statis untuk statistik
+    const statTotalEl = document.getElementById('stat-total');
+    const statLakiLakiEl = document.getElementById('stat-laki-laki');
+    const statPerempuanEl = document.getElementById('stat-perempuan');
+    const statTotalKkEl = document.getElementById('stat-total-kk');
+    const chartDescriptionEl = document.getElementById('chart-description');
+
+    // Fungsi untuk memperbarui kartu statistik
+    function updateStats(stats) {
+        if (!stats) return;
+        statTotalEl.innerText = stats.total;
+        statLakiLakiEl.innerText = stats.laki_laki;
+        statPerempuanEl.innerText = stats.perempuan;
+        statTotalKkEl.innerText = stats.total_kk;
     }
-}
-updateDashboard(initialStats, initialChartData);
-Livewire.on('dashboard-updated', ({ stats, chartData }) => {
-    updateDashboard(stats, chartData);
-});
+    
+    // Fungsi utama untuk me-render atau memperbarui grafik
+    function renderChart(mode, data) {
+        if (!data || !data[mode]) return;
+        
+        const chartConfig = {
+            jenis_kelamin: { title: 'Berdasarkan Jenis Kelamin', colors: ['rgba(59, 130, 246, 0.6)', 'rgba(236, 72, 153, 0.6)'] },
+            usia: { title: 'Berdasarkan Kelompok Usia', colors: ['rgba(16, 185, 129, 0.6)'] },
+            status_perkawinan: { title: 'Berdasarkan Status Perkawinan', colors: ['rgba(245, 158, 11, 0.6)'] },
+            pendidikan: { title: 'Berdasarkan Pendidikan Terakhir', colors: ['rgba(139, 92, 246, 0.6)'] },
+        };
+
+        const config = chartConfig[mode];
+        const chartData = data[mode];
+        chartDescriptionEl.innerText = config.title;
+
+        if (wargaChart) {
+            // Jika grafik sudah ada, update datanya
+            wargaChart.data.labels = chartData.labels;
+            wargaChart.data.datasets[0].data = chartData.data;
+            wargaChart.data.datasets[0].backgroundColor = config.colors;
+            wargaChart.options.plugins.title.text = `Grafik Penduduk ${config.title}`;
+            wargaChart.update();
+        } else {
+            // Jika belum ada, buat instance grafik baru
+            wargaChart = new Chart(chartCanvas.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Jumlah Penduduk',
+                        data: chartData.data,
+                        backgroundColor: config.colors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: `Grafik Penduduk ${config.title}`,
+                            padding: { top: 10, bottom: 20 }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    // --- INISIALISASI SAAT HALAMAN DIMUAT ---
+    updateStats(initialStats);
+    renderChart(initialChartMode, allInitialChartData);
+
+    // --- LISTENER UNTUK EVENT DARI LIVEWIRE ---
+    Livewire.on('dashboard-updated', ({ stats, allChartData, chartMode }) => {
+        updateStats(stats);
+        renderChart(chartMode, allChartData);
+    });
 });
 </script>
 @endpush
-

@@ -24,18 +24,31 @@
         </div>
     </div>
 
-    {{-- PERBAIKAN: Layout Grafik dan Filter dibuat vertikal --}}
+    {{-- Layout Grafik dan Filter --}}
     <div class="flex flex-col gap-6">
         {{-- Grafik Komposisi Penduduk --}}
         <div class="rounded-lg border border-slate-200 bg-white p-5 shadow">
-            <h3 class="text-lg font-semibold text-main">Grafik Komposisi Penduduk</h3>
-            <p class="mt-1 text-sm text-light">Berdasarkan Jenis Kelamin</p>
-            <div class="mt-4 h-72">
+            <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                <div>
+                    <h3 class="text-lg font-semibold text-main">Grafik Komposisi Penduduk</h3>
+                    <p class="mt-1 text-sm text-light" id="chart-description">Berdasarkan Jenis Kelamin</p>
+                </div>
+                {{-- PENAMBAHAN: Dropdown untuk memilih mode grafik --}}
+                <div class="flex items-center gap-x-2">
+                    <label for="chartMode" class="text-sm font-medium text-main">Tampilkan berdasarkan:</label>
+                    <x-forms.select wire:model.live="chartMode" id="chartMode" class="rounded-md border-slate-300 text-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="jenis_kelamin">Jenis Kelamin</option>
+                        <option value="usia">Kelompok Usia</option>
+                        <option value="status_perkawinan">Status Perkawinan</option>
+                        <option value="pendidikan">Pendidikan</option>
+                    </x-forms.select>
+                </div>
+            </div>
+            <div class="mt-4 h-96"> {{-- Tinggi ditambah agar label panjang tidak terpotong --}}
                 <canvas id="wargaChart"></canvas>
             </div>
         </div>
         
-        {{-- Filter Data --}}
         @include('livewire.warga.partials._filters')
     </div>
 </div>
