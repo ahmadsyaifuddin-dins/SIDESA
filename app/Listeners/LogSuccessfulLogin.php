@@ -35,7 +35,7 @@ class LogSuccessfulLogin
         activity()
            ->performedOn($user)
            ->causedBy($user)
-           ->log('User Login nih!');
+           ->log('User Logged In');
     }
 }
 

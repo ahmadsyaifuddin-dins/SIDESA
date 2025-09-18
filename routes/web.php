@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\WargaExportController; 
 
 // Rute Halaman Welcome (Publik)
 Route::get('/', function () {
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
         // Rute untuk menampilkan form tambah warga (harus di atas rute {warga})
         Route::get('/create', \App\Livewire\Warga\Form::class)->name('create');
         
+        Route::get('/export/pdf', [WargaExportController::class, 'exportPdf'])->name('export.pdf');
+
         Route::get('/{warga}', \App\Livewire\Warga\Show::class)->name('show');
 
         // Rute untuk menampilkan form edit warga

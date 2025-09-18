@@ -16,14 +16,33 @@
             Tambah Warga
         </a>
         <button @click="showImportModal = true"
-            class="bg-primary hover:bg-primary-dark flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
+            class="flex items-center gap-x-2 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-main transition hover:bg-slate-50">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
                 <path
                     d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.955 3.129a.75.75 0 001.09-1.03l-4.25-4.5a.75.75 0 00-1.09 0l-4.25 4.5a.75.75 0 101.09 1.03L9.25 4.636v8.614z" />
                 <path
                     d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
             </svg>
-            Import Data
+            Import Excel
         </button>
+        
+        {{-- --- TOMBOL EXPORT PDF BARU --- --}}
+        @php
+            // Menyiapkan parameter filter untuk URL
+            $filters = array_filter([
+                'search' => $search,
+                'filterJenisKelamin' => $filterJenisKelamin,
+                'filterAgama' => $filterAgama,
+                'filterUsiaMin' => $filterUsiaMin,
+                'filterUsiaMax' => $filterUsiaMax,
+                'filterPendidikan' => $filterPendidikan,
+                'filterStatusPerkawinan' => $filterStatusPerkawinan,
+            ]);
+        @endphp
+        <a href="{{ route('warga.export.pdf', $filters) }}" target="_blank"
+            class="bg-red-600 hover:bg-red-700 flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
+            <i class="fa-solid fa-file-pdf"></i>
+            Export PDF
+        </a>
     </div>
 </div>
