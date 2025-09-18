@@ -5,7 +5,15 @@
         <p class="text-light">Kelola semua data penduduk desa Anjir Muara Kota Tengah.</p>
     </div>
 
-    <div class="flex items-center gap-x-2">
+    {{-- 
+        PERUBAHAN UTAMA ADA DI SINI:
+        1. flex-wrap: Memungkinkan tombol turun ke baris baru jika ruang sempit.
+        2. gap-2: Memberi jarak (gap) di semua sisi (atas, bawah, kiri, kanan) antar tombol.
+        3. justify-start md:justify-end: 
+           - Di layar kecil (mobile), tombol akan mulai dari kiri.
+           - Di layar medium ke atas, tombol akan menempel di kanan.
+    --}}
+    <div class="flex w-full flex-wrap items-center justify-start gap-2 md:w-auto md:justify-end">
         <a href="{{ route('warga.create') }}" wire:navigate
             class="flex items-center gap-x-2 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-main transition hover:bg-slate-50">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
@@ -18,17 +26,13 @@
         <button @click="showImportModal = true"
             class="flex items-center gap-x-2 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-main transition hover:bg-slate-50">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
-                <path
-                    d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.955 3.129a.75.75 0 001.09-1.03l-4.25-4.5a.75.75 0 00-1.09 0l-4.25 4.5a.75.75 0 101.09 1.03L9.25 4.636v8.614z" />
-                <path
-                    d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
+                <path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.955 3.129a.75.75 0 001.09-1.03l-4.25-4.5a.75.75 0 00-1.09 0l-4.25 4.5a.75.75 0 101.09 1.03L9.25 4.636v8.614z" />
+                <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
             </svg>
             Import Excel
         </button>
         
-        {{-- --- TOMBOL EXPORT PDF BARU --- --}}
         @php
-            // Menyiapkan parameter filter untuk URL
             $filters = array_filter([
                 'search' => $search,
                 'filterJenisKelamin' => $filterJenisKelamin,
@@ -39,14 +43,17 @@
                 'filterStatusPerkawinan' => $filterStatusPerkawinan,
             ]);
         @endphp
+
         <a href="{{ route('warga.export.pdf', $filters) }}" target="_blank"
-            class="bg-red-600 hover:bg-red-700 flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
+            class="flex items-center gap-x-2 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700">
             <i class="fa-solid fa-file-pdf"></i>
             Export PDF
         </a>
-        <a href="{{ route('warga.export.excel', $filters) }}" target="_blank" class="bg-green-600 hover:bg-green-700 flex items-center gap-x-2 rounded-md px-4 py-2 text-sm font-medium text-white transition">
+        <a href="{{ route('warga.export.excel', $filters) }}" target="_blank" 
+            class="flex items-center gap-x-2 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700">
             <i class="fa-solid fa-file-excel"></i>
             Export Excel
         </a>
     </div>
 </div>
+
