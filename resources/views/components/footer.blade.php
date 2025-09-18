@@ -4,7 +4,7 @@
             &copy; 2025-{{ date('Y') }} SIDESA Anjir Muara. All Rights Reserved.
         </div>
         <div class="hidden md:inline-block">
-            Versi 0.6.4-alpha | Dibuat oleh Ahmad Syaifuddin - PKL UNISKA Banjarmasin
+            Versi 0.6.5-alpha | Dibuat oleh Ahmad Syaifuddin - PKL UNISKA Banjarmasin
         </div>
     </div>
 </footer>
