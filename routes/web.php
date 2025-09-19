@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\HistoryExportController;
 use App\Http\Controllers\WargaExportController; 
 
 // Rute Halaman Welcome (Publik)
@@ -24,6 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     Route::get('/profile', \App\Livewire\Profile\UpdateForm::class)->name('profile.edit');
+
+    Route::get('/history', \App\Livewire\History\Index::class)->name('history.index');
+
+    Route::get('/history/export/pdf', [HistoryExportController::class, 'exportPdf'])->name('history.export.pdf');
+    Route::get('/history/export/excel', [HistoryExportController::class, 'exportExcel'])->name('history.export.excel');
 
     // --- GRUP RUTE MANAJEMEN WARGA ---
     Route::prefix('warga')->as('warga.')->group(function () {

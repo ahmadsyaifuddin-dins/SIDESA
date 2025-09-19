@@ -2,13 +2,13 @@
 <div class="mb-4 flex items-center justify-between">
     <div class="flex items-center gap-x-2">
         <x-forms.select wire:model.live="perPage"
-            class="rounded-md bg-surface border-slate-300 pr-1 text-sm focus:border-blue-500 focus:ring-blue-500">
+            class="rounded-md bg-surface w-10 border-slate-300 pr-1 text-sm focus:border-blue-500 focus:ring-blue-500">
             <option value="15">15</option>
             <option value="30">30</option>
             <option value="50">50</option>
             <option value="100">100</option>
         </x-forms.select>
-        <p class="text-sm text-light">data per halaman</p>
+        <p class="text-sm text-light whitespace-nowrap">per data</p>
     </div>
     <div class="relative w-full rounded-full max-w-xs bg-surface">
         <x-forms.input type="text" wire:model.live.debounce.300ms="search"

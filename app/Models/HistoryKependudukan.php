@@ -10,18 +10,8 @@ class HistoryKependudukan extends Model
 {
     use HasFactory;
 
-    /**
-     * Nama tabel yang terhubung dengan model ini.
-     *
-     * @var string
-     */
     protected $table = 'history_kependudukan';
 
-    /**
-     * Atribut yang dapat diisi secara massal.
-     *
-     * @var array
-     */
     protected $fillable = [
         'warga_id',
         'peristiwa',
@@ -31,13 +21,8 @@ class HistoryKependudukan extends Model
         'created_by',
     ];
 
-    /**
-     * Tipe data atribut yang perlu di-casting.
-     *
-     * @var array
-     */
     protected $casts = [
-        'tanggal_peristiwa' => 'date',
+        'tanggal_peristiwa' => 'date', 
     ];
 
     /**
@@ -49,10 +34,12 @@ class HistoryKependudukan extends Model
     }
 
     /**
-     * Relasi: Satu catatan Histori dibuat oleh satu User (operator).
+     * PERBAIKAN: Mengubah nama relasi dari 'pencatat' menjadi 'creator'
+     * agar konsisten dengan pemanggilan di komponen Livewire dan view.
      */
-    public function pencatat(): BelongsTo
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 }
+
