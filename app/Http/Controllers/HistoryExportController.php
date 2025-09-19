@@ -32,7 +32,7 @@ class HistoryExportController extends Controller
         $histories = $this->getFilteredQuery($request)->get();
         $fileName = 'laporan-histori-kependudukan-' . date('Y-m-d') . '.xlsx';
 
-        return Excel::download(new HistoryKependudukan($histories), $fileName);
+        return Excel::download(new HistoryExport($histories), $fileName);
     }
 
     /**
