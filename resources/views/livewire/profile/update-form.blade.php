@@ -13,19 +13,21 @@
                     <!-- Tampilan Preview Gambar -->
                     <div class="mt-2">
                         @if ($photo)
-                            <img src="{{ $photo->temporaryUrl() }}" class="rounded-full w-32 h-32 object-cover">
+                        <img src="{{ $photo->temporaryUrl() }}" class="rounded-full w-32 h-32 object-cover">
                         @elseif (Auth::user()->profile_photo_path)
-                            <img src="{{ asset(Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}" class="rounded-full w-32 h-32 object-cover">
+                        <img src="{{ asset(Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}"
+                            class="rounded-full w-32 h-32 object-cover">
                         @else
-                            <div class="w-32 h-32 rounded-full bg-slate-200 flex items-center justify-center">
-                                <span class="text-3xl text-slate-500">{{ substr(Auth::user()->name, 0, 1) }}</span>
-                            </div>
+                        <div class="w-32 h-32 rounded-full bg-slate-200 flex items-center justify-center">
+                            <span class="text-3xl text-slate-500">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                        </div>
                         @endif
                     </div>
                     <!-- Tombol Upload -->
                     <div class="mt-4">
                         <input type="file" wire:model="photo" class="hidden" x-ref="photo">
-                        <button type="button" @click="$refs.photo.click()" class="text-sm bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
+                        <button type="button" @click="$refs.photo.click()"
+                            class="text-sm bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors">
                             Unggah Foto
                         </button>
                     </div>
@@ -38,6 +40,12 @@
                         <label for="nik" class="block text-sm font-medium text-main">NIK</label>
                         <x-forms.input wire:model="nik" id="nik" type="text" class="mt-1" />
                         @error('nik') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        {{-- Saran bila NIK kosong --}}
+                        @if (empty($nik))
+                        <p class="text-sm text-amber-600 mt-1">
+                            NIK belum diisi — disarankan untuk mengisi NIK agar data identitas lengkap.
+                        </p>
+                        @endif
                     </div>
                     <div>
                         <label for="name" class="block text-sm font-medium text-main">Nama</label>
@@ -76,7 +84,8 @@
                 </div>
             </div>
             <div class="mt-6 flex justify-end">
-                <button type="submit" wire:loading.attr="disabled" class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
+                <button type="submit" wire:loading.attr="disabled"
+                    class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
                     Simpan Perubahan
                 </button>
             </div>
@@ -87,7 +96,8 @@
     <div class="bg-surface rounded-lg shadow-lg">
         <div class="px-6 py-4 border-b border-slate-200">
             <h2 class="text-xl font-bold text-main">Ubah Password</h2>
-            <p class="text-sm text-light mt-1">Pastikan akun Anda menggunakan password yang panjang dan acak agar tetap aman.</p>
+            <p class="text-sm text-light mt-1">Pastikan akun Anda menggunakan password yang panjang dan acak agar tetap
+                aman.</p>
         </div>
         <form wire:submit="updatePassword" class="p-6">
             <div class="space-y-4">
@@ -102,12 +112,15 @@
                     @error('password') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                 </div>
                 <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-main">Konfirmasi Password Baru</label>
-                    <x-forms.input type="password" wire:model="password_confirmation" id="password_confirmation" class="mt-1" />
+                    <label for="password_confirmation" class="block text-sm font-medium text-main">Konfirmasi Password
+                        Baru</label>
+                    <x-forms.input type="password" wire:model="password_confirmation" id="password_confirmation"
+                        class="mt-1" />
                 </div>
             </div>
             <div class="mt-6 flex justify-end">
-                <button type="submit" wire:loading.attr="disabled" class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
+                <button type="submit" wire:loading.attr="disabled"
+                    class="bg-primary-gradient hover:bg-primary-gradient-dark text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50">
                     Ubah Password
                 </button>
             </div>

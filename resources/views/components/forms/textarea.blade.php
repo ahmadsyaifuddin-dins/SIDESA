@@ -2,13 +2,7 @@
     'rows' => 3
 ])
 
-{{-- 
-    Komponen ini menggunakan tag <textarea> yang benar.
-    Semua atribut lain seperti wire:model, id, dll. akan otomatis ditambahkan
-    oleh Laravel melalui $attributes.
---}}
 <textarea {{ $attributes->merge([
-    'class' => 'block w-full border-slate-300 rounded-md shadow-sm focus:border-primary focus:ring-primary',
+    'class' => 'block w-full border-slate-300 rounded-md shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 ring-offset-0 transition-colors duration-150 ease-in-out',
     'rows' => $rows
 ]) }}></textarea>
-

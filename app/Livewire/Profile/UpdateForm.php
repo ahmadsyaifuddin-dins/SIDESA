@@ -35,7 +35,7 @@ class UpdateForm extends Component
     public function mount()
     {
         $user = Auth::user();
-        $this->nik = $user->nik;
+        $this->nik = $user->nik ?? '';
         $this->name = $user->name;
         $this->email = $user->email;
         $this->no_hp = $user->no_hp;

@@ -12,6 +12,15 @@
                 <!-- Kolom Kiri -->
                 <div class="space-y-6">
                     <div>
+                        <label for="nik" class="block text-sm font-medium text-main">NIK</label>
+                        <x-forms.input wire:model="nik" type="text" id="nik" class="mt-1">
+                            <x-slot:leadingIcon>
+                                <i class="fa-solid fa-id-card text-slate-400"></i>
+                            </x-slot:leadingIcon>
+                        </x-forms.input>
+                        @error('nik') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
                         <label for="name" class="block text-sm font-medium text-main">Nama Lengkap</label>
                         <x-forms.input wire:model="name" type="text" id="name" class="mt-1">
                             <x-slot:leadingIcon>
