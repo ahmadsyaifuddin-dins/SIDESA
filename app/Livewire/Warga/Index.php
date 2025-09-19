@@ -12,7 +12,10 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Helpers\BreadcrumbHelper;
+use App\Models\HistoryKependudukan;
 use App\Models\KartuKeluarga;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class Index extends Component
 {
@@ -40,6 +43,8 @@ class Index extends Component
     public array $opsiStatusPerkawinan = [];
 
     public ?Warga $wargaToDelete = null;
+
+    public string $alasanHapus = '';
 
     protected $listeners = ['refresh-data' => '$refresh'];
 
@@ -104,21 +109,6 @@ class Index extends Component
         $this->dispatch('open-delete-modal');
     }
 
-    public function deleteWarga()
-    {
-        if ($this->wargaToDelete) {
-            $nama = $this->wargaToDelete->nama_lengkap;
-            $this->wargaToDelete->delete();
-
-            $this->dispatch('flash-message-display', [
-                'message' => "Data warga '{$nama}' berhasil dihapus.",
-                'type' => 'success'
-            ]);
-            $this->dispatch('refresh-data');
-            $this->dispatch('close-delete-modal');
-        }
-    }
-
     public function import()
     {
         $this->validate(['file' => 'required|mimes:xlsx,xls|max:5240']);
@@ -142,7 +132,7 @@ class Index extends Component
 
     public function render()
     {
-        $wargaQuery = Warga::query()
+        $wargaQuery = Warga::where('aktif', true)
             ->when($this->search, fn($q) => $q->where(fn($sq) => $sq->where('nama_lengkap', 'like', "%{$this->search}%")->orWhere('nik', 'like', "%{$this->search}%")->orWhereHas('kartuKeluarga', fn($kq) => $kq->where('nomor_kk', 'like', "%{$this->search}%"))))
             ->when($this->filterJenisKelamin, fn($q) => $q->where('jenis_kelamin', $this->filterJenisKelamin))
             ->when($this->filterAgama, fn($q) => $q->where('agama', $this->filterAgama))
@@ -227,7 +217,7 @@ class Index extends Component
             'data' => $results->values()->toArray(),
         ];
     }
-    
+
     private function getChartDataUsia($query)
     {
         $ageRanges = [
@@ -255,5 +245,48 @@ class Index extends Component
             'labels' => $data->keys()->toArray(),
             'data' => $data->values()->toArray(),
         ];
+    }
+
+    /**
+     * PERUBAHAN LOGIKA: Tidak lagi menghapus, tetapi menonaktifkan warga.
+     */
+    public function deleteWarga()
+    {
+        $this->validate([
+            'alasanHapus' => ['required', Rule::in(['MENINGGAL', 'PINDAH KELUAR', 'TIDAK DIKETAHUI'])],
+        ], ['alasanHapus.required' => 'Anda harus memilih alasan.']);
+
+        if ($this->wargaToDelete) {
+            DB::transaction(function () {
+                $warga = $this->wargaToDelete;
+                $nama = $warga->nama_lengkap;
+
+                // 1. Buat catatan histori
+                HistoryKependudukan::create([
+                    'warga_id' => $warga->id,
+                    'peristiwa' => $this->alasanHapus,
+                    'tanggal_peristiwa' => now(),
+                    'detail_peristiwa' => "Data warga dinonaktifkan dari sistem. Alasan: {$this->alasanHapus}",
+                    'created_by' => Auth::id(),
+                ]);
+
+                // 2. Nonaktifkan warga
+                $warga->update(['aktif' => false]);
+
+                // 3. Jika yang dihapus adalah Kepala Keluarga, null-kan di tabel KK
+                $kk = $warga->kartuKeluarga;
+                if ($kk && $kk->kepala_keluarga_id === $warga->id) {
+                    $kk->update(['kepala_keluarga_id' => null]);
+                }
+
+                $this->dispatch('flash-message-display', [
+                    'message' => "Data warga '{$nama}' telah {$this->alasanHapus}.",
+                    'type' => 'success'
+                ]);
+
+                $this->dispatch('refresh-data');
+                $this->dispatch('close-delete-modal');
+            });
+        }
     }
 }
