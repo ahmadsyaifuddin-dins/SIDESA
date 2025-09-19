@@ -61,6 +61,11 @@
                         <label for="no_hp" class="block text-sm font-medium text-main">No HP</label>
                         <x-forms.input wire:model="no_hp" id="no_hp" type="text" class="mt-1" />
                         @error('no_hp') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        @if (empty($no_hp))
+                        <p class="text-sm text-amber-600 mt-1">
+                            No HP belum diisi — disarankan untuk mengisi No HP agar data identitas lengkap.
+                        </p>
+                        @endif
                     </div>
                     <div>
                         <label for="jenis_kelamin" class="block text-sm font-medium text-main">Jenis Kelamin</label>
@@ -70,16 +75,43 @@
                             <option value="Perempuan">Perempuan</option>
                         </x-forms.select>
                         @error('jenis_kelamin') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        @if (empty($jenis_kelamin))
+                        <p class="text-sm text-amber-600 mt-1">
+                            Jenis Kelamin belum diisi — disarankan untuk mengisi Jenis Kelamin agar data identitas
+                            lengkap.
+                        </p>
+                        @endif
                     </div>
                     <div>
                         <label for="tanggal_lahir" class="block text-sm font-medium text-main">Tanggal Lahir</label>
                         <x-forms.date wire:model="tanggal_lahir" id="tanggal_lahir" class="mt-1" />
                         @error('tanggal_lahir') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        @if (empty($tanggal_lahir))
+                        <p class="text-sm text-amber-600 mt-1">
+                            Tanggal Lahir belum diisi — disarankan untuk mengisi Tanggal Lahir agar data identitas
+                            lengkap.
+                        </p>
+                        @endif
+                    </div>
+                    <div>
+                        <label for="jabatan" class="block text-sm font-medium text-main">Jabatan</label>
+                        <x-forms.input wire:model="jabatan" id="jabatan" type="text" class="mt-1" />
+                        @error('jabatan') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        @if (empty($jabatan))
+                        <p class="text-sm text-amber-600 mt-1">
+                            Jabatan belum diisi — Jabatan resmi pengguna di kantor desa, misal: "Sekretaris Desa".
+                        </p>
+                        @endif
                     </div>
                     <div class="md:col-span-2">
                         <label for="alamat" class="block text-sm font-medium text-main">Alamat</label>
                         <x-forms.textarea wire:model="alamat" id="alamat" class="mt-1" />
                         @error('alamat') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        @if (empty($alamat))
+                        <p class="text-sm text-amber-600 mt-1">
+                            Alamat belum diisi — disarankan untuk mengisi Alamat agar data identitas lengkap.
+                        </p>
+                        @endif
                     </div>
                 </div>
             </div>

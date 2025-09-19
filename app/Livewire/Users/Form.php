@@ -28,6 +28,9 @@ class Form extends Component
     #[Rule('nullable|string|max:100')]
     public $jabatan = '';
 
+    #[Rule('required|in:Laki-laki,Perempuan')]
+    public $jenis_kelamin = '';
+
     #[Rule('required|in:admin,superadmin,pimpinan')]
     public $role = 'admin';
 
@@ -49,6 +52,7 @@ class Form extends Component
             $this->name = $user->name;
             $this->email = $user->email;
             $this->jabatan = $user->jabatan;
+            $this->jenis_kelamin = $user->jenis_kelamin;
             $this->role = $user->role;
             $this->status = $user->status;
             $this->isEditMode = true;

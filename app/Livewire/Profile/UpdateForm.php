@@ -24,8 +24,10 @@ class UpdateForm extends Component
     public $no_hp = '';
     public $photo; // Properti untuk file upload baru
     public $jenis_kelamin = '';
-    public $tanggal_lahir = '';
+    public string $tanggal_lahir = '';
+    public string $original_tanggal_lahir = '';
     public $alamat = '';
+    public $jabatan = '';
 
     // Properti untuk form ubah password
     public string $current_password = '';
@@ -39,9 +41,15 @@ class UpdateForm extends Component
         $this->name = $user->name;
         $this->email = $user->email;
         $this->no_hp = $user->no_hp;
-        $this->jenis_kelamin = $user->jenis_kelamin;
-        $this->tanggal_lahir = $user->tanggal_lahir;
+        $this->jenis_kelamin = $user->jenis_kelamin ?? '';
+        $this->tanggal_lahir = $user->tanggal_lahir ?? '';
+        $this->original_tanggal_lahir = $user->tanggal_lahir ?? '';
+        // gunakan dispatch (bukan dispatchBrowserEvent)
+        $this->dispatch('restore-tanggal-lahir', [
+            'value' => $this->original_tanggal_lahir
+        ]);
         $this->alamat = $user->alamat;
+        $this->jabatan = $user->jabatan;
     }
 
     public function updateProfile()
@@ -58,7 +66,36 @@ class UpdateForm extends Component
             'jenis_kelamin' => ['nullable', 'in:Laki-laki,Perempuan'],
             'tanggal_lahir' => ['nullable', 'date'],
             'alamat' => ['nullable', 'string', 'max:500'],
+            'jabatan' => ['nullable', 'string', 'max:50'],
         ]);
+
+        // === Handle tanggal_lahir ===
+        // Jika sebelumnya ada tanggal_lahir di DB, dan sekarang user mengosongkan field:
+        // -> batalkan update, kasih notifikasi, jangan set '' ke DB.
+        if (array_key_exists('tanggal_lahir', $validated)) {
+            $tl = $validated['tanggal_lahir'];
+
+            if ($tl === null || $tl === '') {
+                if (!empty($user->tanggal_lahir)) {
+                    $this->dispatch('flash-message-display', [
+                        'message' => 'Tanggal lahir tidak boleh dihapus. Jika ingin mengubahnya, masukkan tanggal yang baru.',
+                        'type' => 'warning'
+                    ]);
+
+                    // restore property Livewire ke nilai awal (supaya UI balik)
+                    $this->tanggal_lahir = $this->original_tanggal_lahir;
+
+                    // pake dispatch bukan dispatchBrowserEvent
+                    $this->dispatch('restore-tanggal-lahir', [
+                        'value' => $this->original_tanggal_lahir
+                    ]);
+
+                    return;
+                } else {
+                    unset($validated['tanggal_lahir']);
+                }
+            }
+        }
 
         if ($this->photo) {
             // Hapus foto lama jika ada

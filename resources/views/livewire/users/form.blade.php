@@ -47,6 +47,14 @@
                         @error('email') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                     </div>
                     <div>
+                        <label for="jenis_kelamin" class="block text-sm font-medium text-main">Jenis Kelamin</label>
+                        <x-forms.select wire:model="jenis_kelamin" id="jenis_kelamin" class="mt-1">
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </x-forms.select>
+                        @error('jenis_kelamin') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
                         <label for="jabatan" class="block text-sm font-medium text-main">Jabatan</label>
                         <x-forms.input wire:model="jabatan" type="text" id="jabatan" class="mt-1">
                             <x-slot:leadingIcon>
@@ -58,7 +66,6 @@
                                     <!-- pita bawah -->
                                     <path d="M10 12l-2 6 4-2 4 2-2-6" />
                                 </svg>
-
                             </x-slot:leadingIcon>
                         </x-forms.input>
                         <p class="mt-2 text-xs text-light">Jabatan resmi pengguna di kantor desa, misal: "Sekretaris
