@@ -7,7 +7,6 @@ use App\Models\User;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
-use livewire\Attribute;
 
 #[Title('Riwayat Kependudukan')]
 class Index extends Component
