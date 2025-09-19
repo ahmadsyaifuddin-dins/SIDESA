@@ -11,6 +11,23 @@
         .header { text-align: center; margin-bottom: 20px; }
         .header h1 { margin: 0; font-size: 18px; }
         .header p { margin: 5px 0; }
+        
+        /* Gaya untuk kotak info filter */
+        .filter-info {
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 9px;
+        }
+        .filter-info h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
+        .filter-info ul {
+            padding-left: 15px;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -20,6 +37,16 @@
         <p>Tanggal Cetak: {{ date('d F Y') }}</p>
     </div>
 
+    @if(!empty($activeFilters))
+        <div class="filter-info">
+            <h4>Filter Laporan Aktif:</h4>
+            <ul>
+                @foreach($activeFilters as $key => $value)
+                    <li><strong>{{ $key }}:</strong> {{ $value }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <table class="table">
         <thead>
             <tr>

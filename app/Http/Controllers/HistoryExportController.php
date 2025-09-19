@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\HistoryExport;
 use App\Models\HistoryKependudukan;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -16,13 +17,45 @@ class HistoryExportController extends Controller
     public function exportPdf(Request $request)
     {
         $histories = $this->getFilteredQuery($request)->get();
-        $filters = $request->all();
-        
-        $pdf = Pdf::loadView('history.pdf', compact('histories', 'filters'));
+
+        $activeFilters = [];
+
+        if ($request->filled('search')) {
+            $activeFilters['Pencarian'] = $request->input('search');
+        }
+
+        if ($request->filled('filterPeristiwa')) {
+            // Mapping untuk mengubah key menjadi teks yang mudah dibaca
+            $opsiPeristiwa = [
+                'Kelahiran' => 'Kelahiran',
+                'Kematian' => 'Kematian',
+                'Pendatang' => 'Pendatang',
+                'Pindah' => 'Pindah',
+            ];
+            $activeFilters['Jenis Peristiwa'] = $opsiPeristiwa[$request->input('filterPeristiwa')] ?? $request->input('filterPeristiwa');
+        }
+
+        if ($request->filled('filterUser')) {
+            $user = User::find($request->input('filterUser'));
+            $activeFilters['Dicatat Oleh'] = $user ? $user->name : 'User Tidak Ditemukan';
+        }
+
+        if ($request->filled('filterTanggalMulai') || $request->filled('filterTanggalSelesai')) {
+            $tglMulai = $request->input('filterTanggalMulai', '-');
+            $tglSelesai = $request->input('filterTanggalSelesai', '-');
+            $activeFilters['Rentang Tanggal'] = "$tglMulai s/d $tglSelesai";
+        }
+
+        $pdf = Pdf::loadView('history.pdf', [
+            'histories' => $histories,
+            'activeFilters' => $activeFilters
+        ]);
+
         $pdf->setPaper('a4', 'landscape');
 
         return $pdf->download('laporan-histori-kependudukan-' . date('Y-m-d') . '.pdf');
     }
+
 
     /**
      * Membuat dan mengunduh file Excel.
@@ -45,7 +78,7 @@ class HistoryExportController extends Controller
             ->when($request->input('search'), function ($query, $search) {
                 $query->whereHas('warga', function ($q) use ($search) {
                     $q->where('nama_lengkap', 'like', "%{$search}%")
-                      ->orWhere('nik', 'like', "%{$search}%");
+                        ->orWhere('nik', 'like', "%{$search}%");
                 });
             })
             ->when($request->input('filterPeristiwa'), fn($q, $p) => $q->where('peristiwa', $p))
