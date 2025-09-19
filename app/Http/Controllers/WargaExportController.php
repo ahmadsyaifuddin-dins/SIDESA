@@ -21,6 +21,7 @@ class WargaExportController extends Controller
     {
         // Mengambil data warga dengan filter yang diterapkan
         $wargas = $this->getFilteredQuery($request)->get();
+        $wargas = $wargas->where('aktif', true);
 
         // Menyiapkan data filter untuk ditampilkan di laporan
         $filters = $request->only([
@@ -61,6 +62,7 @@ class WargaExportController extends Controller
     {
         // 1. Ambil data yang sudah difilter menggunakan metode yang sama
         $wargas = $this->getFilteredQuery($request)->get();
+        $wargas = $wargas->where('aktif', true);
 
         // 2. Tentukan nama file
         $fileName = 'laporan-data-warga-' . date('Y-m-d') . '.xlsx';
