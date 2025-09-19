@@ -1,6 +1,6 @@
 <div x-data="{ showFilters: false }">
     <x-slot:title>
-        Histori Kependudukan
+        Riwayat Kependudukan
     </x-slot:title>
 
     @include('livewire.history.partials._header')

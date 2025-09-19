@@ -8,7 +8,7 @@
             <p class="mt-2 text-sm text-light">
                 Anda akan menonaktifkan data warga: <span class="font-semibold">{{ $wargaToDelete?->nama_lengkap
                     }}</span>.
-                Pilih alasan untuk mencatat peristiwa ini di histori kependudukan.
+                Pilih alasan untuk mencatat peristiwa ini di Riwayat Kependudukan.
             </p>
 
             <div class="mt-4 space-y-3">

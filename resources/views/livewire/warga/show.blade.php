@@ -142,10 +142,10 @@
                 </div>
             </div>
 
-            {{-- Kartu Histori Kependudukan --}}
+            {{-- Kartu Riwayat Kependudukan --}}
             <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
                 <div class="border-b border-slate-200 bg-slate-50 px-6 py-4">
-                    <h3 class="text-base font-medium text-main">Histori Kependudukan</h3>
+                    <h3 class="text-base font-medium text-main">Riwayat Kependudukan</h3>
                 </div>
                 <div class="p-6">
                     <ul class="space-y-4">
@@ -158,7 +158,7 @@
                             <p class="mt-1 text-sm text-slate-600">{{ $histori->detail_peristiwa }}</p>
                         </li>
                         @empty
-                        <p class="text-sm text-light">Belum ada histori kependudukan yang tercatat.</p>
+                        <p class="text-sm text-light">Belum ada Riwayat Kependudukan yang tercatat.</p>
                         @endforelse
                     </ul>
                 </div>

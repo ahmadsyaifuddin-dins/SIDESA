@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Laporan Histori Kependudukan</title>
+    <title>Laporan Riwayat Kependudukan</title>
     <style>
         body { font-family: sans-serif; font-size: 10px; }
         .table { width: 100%; border-collapse: collapse; }
@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Laporan Histori Kependudukan</h1>
+        <h1>Laporan Riwayat Kependudukan</h1>
         <p>Desa Anjir Muara Kota Tengah</p>
         <p>Tanggal Cetak: {{ date('d F Y') }}</p>
     </div>
