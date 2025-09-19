@@ -38,7 +38,7 @@
         @auth
             {{-- IKON NOTIFIKASI BARU --}}
             <div x-data="{ open: false }" class="relative">
-                <button @click="open = !open" class="relative">
+                <button @click="open = !open" class="relative cursor-pointer">
                     <svg class="w-6 h-6 text-main" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>
                     <span class="absolute -top-1 -right-1 flex h-3 w-3">
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -57,7 +57,7 @@
 
             {{-- Dropdown Profil (tidak berubah) --}}
             <div x-data="{ open: false }" @click.outside="open = false" class="relative">
-                <button @click="open = !open" class="flex items-center gap-3">
+                <button @click="open = !open" class="flex items-center gap-3 cursor-pointer">
                     <div class="text-right">
                         <div class="font-semibold text-sm text-main">{{ auth()->user()->name }}</div>
                         <div class="text-xs text-light">{{ auth()->user()->role }}</div>
@@ -66,7 +66,7 @@
                         @if (auth()->user()->profile_photo_path)
                             <img src="{{ asset(Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}" class="w-full h-full object-cover rounded-full">
                         @else
-                            <div class="w-full h-full rounded-full bg-primary text-white flex items-center justify-center font-bold">
+                            <div class="w-full h-full rounded-full bg-primary-gradient text-white flex items-center justify-center font-bold">
                                 {{ substr(auth()->user()->name, 0, 1) }}
                             </div>
                         @endif
@@ -76,7 +76,7 @@
                     <a href="{{ route('profile.edit') }}" wire:navigate class="block px-4 py-2 text-sm text-main hover:bg-slate-100">Profil Saya</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-danger hover:bg-slate-100">Logout</button>
+                        <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-red-600 bg-red-100 hover:bg-red-200 cursor-pointer">Logout</button>
                     </form>
                 </div>
             </div>

@@ -16,6 +16,9 @@ class Form extends Component
     public User $user;
     public $breadcrumbs = [];
 
+    #[Rule('nullable|string|max:255')]
+    public $nik = '';
+
     #[Rule('required|string|max:255')]
     public $name = '';
 
@@ -42,6 +45,7 @@ class Form extends Component
     {
         if ($user->exists) {
             $this->user = $user;
+            $this->nik = $user->nik;
             $this->name = $user->name;
             $this->email = $user->email;
             $this->jabatan = $user->jabatan;
