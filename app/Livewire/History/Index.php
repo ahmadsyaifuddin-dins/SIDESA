@@ -167,6 +167,12 @@ class Index extends Component
         $now = Carbon::now();
 
         switch ($period) {
+            case '3months':
+                // 3 bulan terakhir termasuk bulan ini
+                $start = $now->copy()->subMonths(2)->startOfMonth();
+                $end   = $now->copy()->endOfMonth();
+                break;
+
             case '6months':
                 // 6 bulan terakhir termasuk bulan ini
                 $start = $now->copy()->subMonths(5)->startOfMonth();
@@ -182,6 +188,54 @@ class Index extends Component
             case '2years':
                 // 24 bulan terakhir termasuk bulan ini
                 $start = $now->copy()->subMonths(23)->startOfMonth();
+                $end   = $now->copy()->endOfMonth();
+                break;
+
+            case '3years':
+                // 36 bulan terakhir termasuk bulan ini
+                $start = $now->copy()->subMonths(35)->startOfMonth();
+                $end   = $now->copy()->endOfMonth();
+                break;
+
+            case '4years':
+                // 48 bulan terakhir termasuk bulan ini
+                $start = $now->copy()->subMonths(47)->startOfMonth();
+                $end   = $now->copy()->endOfMonth();
+                break;
+
+            case '5years':
+                // 60 bulan terakhir termasuk bulan ini
+                $start = $now->copy()->subMonths(59)->startOfMonth();
+                $end   = $now->copy()->endOfMonth();
+                break;
+
+            case '6years':
+                // 72 bulan terakhir termasuk bulan ini
+                $start = $now->copy()->subMonths(71)->startOfMonth();
+                $end   = $now->copy()->endOfMonth();
+                break;
+
+            case '7years':
+                // 84 bulan terakhir termasuk bulan ini
+                $start = $now->copy()->subMonths(83)->startOfMonth();
+                $end   = $now->copy()->endOfMonth();
+                break;
+
+            case '8years':
+                // 96 bulan terakhir termasuk bulan ini
+                $start = $now->copy()->subMonths(95)->startOfMonth();
+                $end   = $now->copy()->endOfMonth();
+                break;
+
+            case '9years':
+                // 108 bulan terakhir termasuk bulan ini
+                $start = $now->copy()->subMonths(107)->startOfMonth();
+                $end   = $now->copy()->endOfMonth();
+                break;
+
+            case '10years':
+                // 120 bulan terakhir termasuk bulan ini
+                $start = $now->copy()->subMonths(119)->startOfMonth();
                 $end   = $now->copy()->endOfMonth();
                 break;
 

@@ -16,9 +16,18 @@
                 <x-forms.select wire:model.live="chartPeriod"
                     class="rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 text-sm">
                     <option value="all">Semua Waktu</option>
+                    <option value="3months">3 Bulan Terakhir</option>
                     <option value="6months">6 Bulan Terakhir</option>
                     <option value="1year">1 Tahun Terakhir</option>
                     <option value="2years">2 Tahun Terakhir</option>
+                    <option value="3years">3 Tahun Terakhir</option>
+                    <option value="4years">4 Tahun Terakhir</option>
+                    <option value="5years">5 Tahun Terakhir</option>
+                    <option value="6years">6 Tahun Terakhir</option>
+                    <option value="7years">7 Tahun Terakhir</option>
+                    <option value="8years">8 Tahun Terakhir</option>
+                    <option value="9years">9 Tahun Terakhir</option>
+                    <option value="10years">10 Tahun Terakhir</option>
                 </x-forms.select>
 
                 <button wire:click="refreshChart"
