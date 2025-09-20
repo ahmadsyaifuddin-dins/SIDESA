@@ -104,6 +104,8 @@ class Form extends Component
                 'created_by' => Auth::id(),
             ]);
 
+            $this->dispatch('history-created')->to(\App\Livewire\History\Index::class);
+            
             session()->flash('success', 'Data warga berhasil ditambahkan.');
         } else {
             $this->warga->update($validatedData);

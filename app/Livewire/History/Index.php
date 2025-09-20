@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 #[Title('Riwayat Kependudukan')]
 class Index extends Component
@@ -134,6 +135,18 @@ class Index extends Component
     public function updatedChartPeriod($value)
     {
         $chartData = $this->getChartData();
+        $this->dispatch('chart-updated', data: $chartData);
+    }
+
+    /**
+     * Handle event when a new history record is created elsewhere in the app.
+     * This will regenerate chart data and push to the frontend.
+     */
+    #[On('history-created')]
+    public function onHistoryCreated()
+    {
+        $chartData = $this->getChartData();
+        // Livewire v3: dispatch browser DOM event with named param 'data'
         $this->dispatch('chart-updated', data: $chartData);
     }
 
