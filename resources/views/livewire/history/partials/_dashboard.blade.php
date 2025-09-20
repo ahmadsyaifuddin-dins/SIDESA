@@ -41,23 +41,23 @@
 
         <!-- Error Message -->
         @if (isset($chartData) && !$chartData['success'])
-            <div class="bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-md p-4 mb-4">
-                <div class="flex">
-                    <svg class="h-5 w-5 text-red-400 dark:text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <div class="ml-3">
-                        <h3 class="text-sm font-medium text-red-800 dark:text-red-200">Error</h3>
-                        <p class="text-sm text-red-700 dark:text-red-300 mt-1">
-                            {{ $chartData['message'] ??
-                                'Terjadi
-                                                    kesalahan saat memuat data chart' }}
-                        </p>
-                    </div>
+        <div class="bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-md p-4 mb-4">
+            <div class="flex">
+                <svg class="h-5 w-5 text-red-400 dark:text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd" />
+                </svg>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800 dark:text-red-200">Error</h3>
+                    <p class="text-sm text-red-700 dark:text-red-300 mt-1">
+                        {{ $chartData['message'] ??
+                        'Terjadi
+                        kesalahan saat memuat data chart' }}
+                    </p>
                 </div>
             </div>
+        </div>
         @endif
 
         <!-- Chart Container (wrapper untuk loading masih dikontrol Livewire) -->
@@ -72,38 +72,39 @@
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6" wire:loading.class="opacity-50"
             wire:target="chartPeriod,refreshChart">
             @if (isset($chartStats) && $chartStats['success'])
-                @php
-                    $colors = [
-                        'LAHIR' => ['icon' => '👶', 'color' => 'rgb(34, 197, 94)'],
-                        'MENINGGAL' => ['icon' => '⚰️', 'color' => 'rgb(239, 68, 68)'],
-                        'PINDAH MASUK' => ['icon' => '📥', 'color' => 'rgb(59, 130, 246)'],
-                        'PINDAH KELUAR' => ['icon' => '📤', 'color' => 'rgb(245, 158, 11)'],
-                        'TIDAK DIKETAHUI' => ['icon' => '❓', 'color' => 'rgb(156, 163, 175)'],
-                    ];
+            @php
+            $colors = [
+            'LAHIR' => ['icon' => 'fa fa-baby', 'color' => 'rgb(34, 197, 94)'],
+            'MENINGGAL' => ['icon' => 'fa fa-skull-crossbones', 'color' => 'rgb(239, 68, 68)'],
+            'PINDAH MASUK' => ['icon' => 'fa fa-sign-in-alt', 'color' => 'rgb(59, 130, 246)'],
+            'PINDAH KELUAR' => ['icon' => 'fa fa-person-hiking', 'color' => 'rgb(245, 158, 11)'],
+            'TIDAK DIKETAHUI' => ['icon' => 'fa fa-question', 'color' => 'rgb(156, 163, 175)'],
+            ];
 
-                    $labels = [
-                        'LAHIR' => 'Kelahiran',
-                        'MENINGGAL' => 'Kematian',
-                        'PINDAH MASUK' => 'Pindah Masuk',
-                        'PINDAH KELUAR' => 'Pindah Keluar',
-                        'TIDAK DIKETAHUI' => 'Tidak Diketahui',
-                    ];
-                @endphp
+            $labels = [
+            'LAHIR' => 'Kelahiran',
+            'MENINGGAL' => 'Kematian',
+            'PINDAH MASUK' => 'Pindah Masuk',
+            'PINDAH KELUAR' => 'Pindah Keluar',
+            'TIDAK DIKETAHUI' => 'Tidak Diketahui',
+            ];
+            @endphp
 
-                @foreach (['LAHIR', 'MENINGGAL', 'PINDAH MASUK', 'PINDAH KELUAR', 'TIDAK DIKETAHUI'] as $peristiwa)
-                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                    {{ $colors[$peristiwa]['icon'] }} {{ $labels[$peristiwa] }}
-                                </p>
-                                <p class="text-2xl font-bold" style="color: {{ $colors[$peristiwa]['color'] }}">
-                                    {{ $chartStats['stats'][$peristiwa] ?? 0 }}
-                                </p>
-                            </div>
-                        </div>
+            @foreach (['LAHIR', 'MENINGGAL', 'PINDAH MASUK', 'PINDAH KELUAR', 'TIDAK DIKETAHUI'] as $peristiwa)
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            <i class="{{ $colors[$peristiwa]['icon'] }} mr-2"
+                                style="color: {{ $colors[$peristiwa]['color'] }}"></i>{{ $labels[$peristiwa] }}
+                        </p>
+                        <p class="text-2xl font-bold" style="color: {{ $colors[$peristiwa]['color'] }}">
+                            {{ $chartStats['stats'][$peristiwa] ?? 0 }}
+                        </p>
                     </div>
-                @endforeach
+                </div>
+            </div>
+            @endforeach
             @endif
         </div>
     </div>
